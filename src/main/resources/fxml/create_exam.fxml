@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.CreateExamController"
+            prefHeight="700.0" prefWidth="900.0"
+            style="-fx-background-color: #f5f5f5;">
+    
+    <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="0.0" 
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" 
+                AnchorPane.topAnchor="0.0">
+        <VBox spacing="20.0" style="-fx-padding: 30;">
+            
+            <!-- Titre -->
+            <Label text="Créer un Nouvel Examen" 
+                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+            
+            <!-- Formulaire -->
+            <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 10;">
+                
+                <!-- Titre de l'examen -->
+                <Label text="Titre de l'examen *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <TextField fx:id="titleField" promptText="Ex: Examen de Mathématiques - Chapitre 3" />
+                
+                <!-- Description -->
+                <Label text="Description" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                <TextArea fx:id="descriptionField" promptText="Description de l'examen (optionnel)" 
+                          prefRowCount="3" wrapText="true" />
+                
+                <!-- Durée -->
+                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                    <Label text="Durée (en minutes) *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="durationField" promptText="60" prefWidth="100.0" />
+                </HBox>
+                
+                <Separator />
+                
+                <!-- Section Questions -->
+                <Label text="Questions" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                
+                <VBox fx:id="questionsContainer" spacing="15.0" />
+                
+                <Button fx:id="addQuestionButton" text="+ Ajouter une Question" 
+                        onAction="#handleAddQuestion"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5;" />
+                
+            </VBox>
+            
+            <!-- Boutons d'action -->
+            <HBox spacing="15.0" alignment="CENTER_RIGHT">
+                <Button fx:id="cancelButton" text="Annuler" onAction="#handleBack"
+                        style="-fx-background-color: #757575; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5; -fx-pref-width: 120;" />
+                <Button fx:id="createButton" text="Créer l'Examen" onAction="#handleCreateExam"
+                        style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-pref-width: 150;" />
+            </HBox>
+            
+            <!-- Message de statut -->
+            <Label fx:id="statusLabel" text="" style="-fx-text-fill: #4CAF50; -fx-font-size: 12px;" />
+            
+        </VBox>
+    </ScrollPane>
+</AnchorPane>

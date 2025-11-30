@@ -1,0 +1,37 @@
+═══════════════════════════════════════════════════════════════
+  COMMENT COMPILER ET LANCER LE PROJET - INSTRUCTIONS SIMPLES
+═══════════════════════════════════════════════════════════════
+
+❌ NE PAS FAIRE:
+   - Ne pas utiliser: javac Main.java
+   - Ne pas être dans: src/main/java/com/project/projetqcm/
+   - Ne pas compiler fichier par fichier
+
+✅ À FAIRE:
+
+1. OUVREZ LE TERMINAL DANS INTELLIJ
+   - Appuyez sur: Alt + F12
+   - OU: View → Tool Windows → Terminal
+
+2. ASSUREZ-VOUS D'ÊTRE À LA RACINE DU PROJET
+   - Vous devez voir: pom.xml dans le répertoire actuel
+   - Si vous êtes dans src/main/java/..., faites: cd ../../../../
+
+3. TAPEZ CETTE COMMANDE:
+   mvnw.cmd javafx:run
+
+4. APPUYEZ SUR ENTRÉE
+
+5. ATTENDEZ - Maven va:
+   - Télécharger les dépendances (première fois seulement)
+   - Compiler le projet
+   - Lancer l'application JavaFX
+
+═══════════════════════════════════════════════════════════════
+
+SI VOUS VOYEZ DES ERREURS "package javafx does not exist":
+   → C'est parce que vous utilisez javac au lieu de Maven!
+   → Utilisez: mvnw.cmd javafx:run (PAS javac!)
+
+═══════════════════════════════════════════════════════════════
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.JoinExamController"
+            prefHeight="500.0" prefWidth="700.0"
+            style="-fx-background-color: #f5f5f5;">
+    
+    <VBox alignment="CENTER" spacing="30.0" AnchorPane.bottomAnchor="0.0" 
+          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" 
+          AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+        </padding>
+        
+        <!-- Titre -->
+        <Label text="Rejoindre un Examen" 
+               style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+        
+        <!-- Instructions -->
+        <Label text="Entrez le code d'examen fourni par votre professeur" 
+               style="-fx-font-size: 14px; -fx-text-fill: #666;" 
+               textAlignment="CENTER" />
+        
+        <!-- Formulaire -->
+        <VBox spacing="20.0" alignment="CENTER" prefWidth="400.0"
+              style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;">
+            
+            <!-- Champ code -->
+            <Label text="Code d'Examen *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            <TextField fx:id="examCodeField" promptText="Ex: ABC123" 
+                       style="-fx-font-size: 18px; -fx-alignment: center;"
+                       prefWidth="300.0" />
+            
+            <!-- Nom de l'étudiant -->
+            <Label text="Votre Nom *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            <TextField fx:id="studentNameField" promptText="Votre nom complet" 
+                       prefWidth="300.0" />
+            
+            <!-- Message d'erreur -->
+            <Label fx:id="errorLabel" text="" 
+                   style="-fx-text-fill: #f44336; -fx-font-size: 12px;"
+                   textAlignment="CENTER" 
+                   wrapText="true" />
+            
+            <!-- Bouton -->
+            <Button fx:id="joinButton" text="Rejoindre l'Examen" 
+                    onAction="#handleJoinExam"
+                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-pref-width: 200; -fx-pref-height: 40;" />
+        </VBox>
+        
+        <!-- Bouton retour -->
+        <Button text="Retour" onAction="#handleBack" 
+                style="-fx-background-color: #757575; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5;" />
+    </VBox>
+</AnchorPane>

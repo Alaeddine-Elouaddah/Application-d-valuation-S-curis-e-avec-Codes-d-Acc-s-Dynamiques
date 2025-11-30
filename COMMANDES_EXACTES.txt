@@ -1,0 +1,49 @@
+═══════════════════════════════════════════════════════════════
+  COMMANDES EXACTES À TAPER DANS LE TERMINAL
+═══════════════════════════════════════════════════════════════
+
+VOUS ÊTES ACTUELLEMENT ICI:
+C:\Users\hp zbook\Downloads\ProjetQcm\ProjetQcm\src\main\java\com\project\projetqcm>
+
+MAIS VOUS DEVEZ ÊTRE ICI:
+C:\Users\hp zbook\Downloads\ProjetQcm\ProjetQcm>
+
+═══════════════════════════════════════════════════════════════
+
+ÉTAPE 1: REMONTER À LA RACINE
+
+Tapez cette commande pour remonter à la racine:
+cd C:\Users\hp zbook\Downloads\ProjetQcm\ProjetQcm
+
+OU tapez plusieurs fois:
+cd ..\..\..\..\..
+
+═══════════════════════════════════════════════════════════════
+
+ÉTAPE 2: VÉRIFIER QUE VOUS ÊTES AU BON ENDROIT
+
+Tapez:
+dir pom.xml
+
+Vous devez voir:
+pom.xml
+
+Si vous voyez "Le fichier est introuvable", vous n'êtes pas au bon endroit!
+
+═══════════════════════════════════════════════════════════════
+
+ÉTAPE 3: LANCER L'APPLICATION
+
+Tapez:
+mvnw.cmd javafx:run
+
+═══════════════════════════════════════════════════════════════
+
+RÉCAPITULATIF COMPLET:
+
+1. cd C:\Users\hp zbook\Downloads\ProjetQcm\ProjetQcm
+2. dir pom.xml  (pour vérifier)
+3. mvnw.cmd javafx:run
+
+═══════════════════════════════════════════════════════════════
+
