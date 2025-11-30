@@ -1,14 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="controllers.ExamController"
+            prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #f5f5f5;">
 
-</AnchorPane>
+    <!-- Top Bar: Timer and Info -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #2196F3; -fx-padding: 15;">
+            <Label fx:id="examTitleLabel" text="Titre de l'Examen" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <VBox alignment="CENTER_RIGHT">
+                <Label fx:id="studentInfoLabel" text="Étudiant: Nom (Filière)" textFill="WHITE">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="timerLabel" text="Temps restant: 00:00:00" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+            </VBox>
+        </HBox>
+    </top>
+
+    <!-- Center: Question Display -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="30.0">
+            <padding>
+                <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+            </padding>
+
+            <!-- Question Number and Text -->
+            <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                <Label fx:id="questionNumberLabel" text="Question 1/10" textFill="#666666">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <Label fx:id="questionTextLabel" text="Quelle est la capitale de la France ?" wrapText="true">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </VBox>
+
+            <!-- Options -->
+            <VBox fx:id="optionsContainer" spacing="15.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                <!-- Options will be added dynamically here -->
+            </VBox>
+        </VBox>
+    </center>
+
+    <!-- Bottom: Navigation -->
+    <bottom>
+        <HBox alignment="CENTER" spacing="50.0" style="-fx-padding: 20; -fx-background-color: #e0e0e0;">
+            <Button fx:id="previousButton" mnemonicParsing="false" onAction="#handlePrevious" text="Précédent" visible="false">
+                <font>
+                    <Font size="16.0" />
+                </font>
+                <padding>
+                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                </padding>
+            </Button>
+            
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmit" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Terminer l'Examen" visible="false">
+                <font>
+                    <Font name="System Bold" size="16.0" />
+                </font>
+                <padding>
+                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                </padding>
+            </Button>
+
+            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#handleNext" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Suivant">
+                <font>
+                    <Font name="System Bold" size="16.0" />
+                </font>
+                <padding>
+                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                </padding>
+            </Button>
+        </HBox>
+    </bottom>
+
+</BorderPane>

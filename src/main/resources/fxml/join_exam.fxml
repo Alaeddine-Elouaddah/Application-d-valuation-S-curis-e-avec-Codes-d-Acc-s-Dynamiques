@@ -41,6 +41,11 @@
             <Label text="Votre Nom *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
             <TextField fx:id="studentNameField" promptText="Votre nom complet" 
                        prefWidth="300.0" />
+
+            <!-- Filière -->
+            <Label text="Filière *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
+            <TextField fx:id="filiereField" promptText="Ex: Informatique, Gestion..." 
+                       prefWidth="300.0" />
             
             <!-- Message d'erreur -->
             <Label fx:id="errorLabel" text="" 
@@ -58,4 +63,13 @@
         <Button text="Retour" onAction="#handleBack" 
                 style="-fx-background-color: #757575; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5;" />
     </VBox>
+
+    <!-- Countdown Overlay (Initially Hidden) -->
+    <StackPane fx:id="countdownOverlay" visible="false" 
+               style="-fx-background-color: rgba(0, 0, 0, 0.9);"
+               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <Label fx:id="countdownLabel" text="5" 
+               style="-fx-text-fill: white; -fx-font-size: 120px; -fx-font-weight: bold;" />
+    </StackPane>
 </AnchorPane>
