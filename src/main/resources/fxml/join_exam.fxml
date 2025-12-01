@@ -8,68 +8,94 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.JoinExamController"
-            prefHeight="500.0" prefWidth="700.0"
-            style="-fx-background-color: #f5f5f5;">
-    
-    <VBox alignment="CENTER" spacing="30.0" AnchorPane.bottomAnchor="0.0" 
-          AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" 
-          AnchorPane.topAnchor="0.0">
-        <padding>
-            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-        </padding>
-        
-        <!-- Titre -->
-        <Label text="Rejoindre un Examen" 
-               style="-fx-font-size: 28px; -fx-font-weight: bold;" />
-        
-        <!-- Instructions -->
-        <Label text="Entrez le code d'examen fourni par votre professeur" 
-               style="-fx-font-size: 14px; -fx-text-fill: #666;" 
-               textAlignment="CENTER" />
-        
-        <!-- Formulaire -->
-        <VBox spacing="20.0" alignment="CENTER" prefWidth="400.0"
-              style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10;">
-            
-            <!-- Champ code -->
-            <Label text="Code d'Examen *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
-            <TextField fx:id="examCodeField" promptText="Ex: ABC123" 
-                       style="-fx-font-size: 18px; -fx-alignment: center;"
-                       prefWidth="300.0" />
-            
-            <!-- Nom de l'étudiant -->
-            <Label text="Votre Nom *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
-            <TextField fx:id="studentNameField" promptText="Votre nom complet" 
-                       prefWidth="300.0" />
+            prefHeight="800.0" prefWidth="900.0"
+            stylesheets="@../css/join_exam.css"
+            styleClass="root-container">
 
-            <!-- Filière -->
-            <Label text="Filière *" style="-fx-font-weight: bold; -fx-font-size: 14px;" />
-            <TextField fx:id="filiereField" promptText="Ex: Informatique, Gestion..." 
-                       prefWidth="300.0" />
-            
+    <!-- Conteneur principal centré -->
+    <VBox alignment="CENTER" spacing="28.0"
+          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <!-- Card blanche (formulaire) -->
+        <VBox alignment="TOP_CENTER" spacing="20.0" 
+              prefWidth="480.0" styleClass="form-card">
+            <padding>
+                <Insets top="48.0" bottom="48.0" left="40.0" right="40.0"/>
+            </padding>
+
+            <!-- Titre -->
+            <Label text="Rejoindre un Examen" styleClass="form-title">
+                <font><Font size="28.0"/></font>
+            </Label>
+
+            <!-- Sous-titre -->
+            <Label text="Entrez le code d'examen fourni par votre professeur"
+                   textAlignment="CENTER" wrapText="true"
+                   styleClass="form-subtitle">
+                <font><Font size="14.0"/></font>
+            </Label>
+
+            <!-- Séparateur visuel -->
+            <Region prefHeight="12.0"/>
+
+            <!-- Champs de saisie -->
+            <VBox spacing="14.0">
+                <!-- Code d'Examen -->
+                <TextField fx:id="examCodeField"
+                           promptText="Code d'Examen *"
+                           styleClass="input-field">
+                    <font><Font size="14.0"/></font>
+                </TextField>
+
+                <!-- Votre Nom -->
+                <TextField fx:id="studentNameField"
+                           promptText="Votre Nom"
+                           styleClass="input-field">
+                    <font><Font size="14.0"/></font>
+                </TextField>
+
+                <!-- Filière -->
+                <TextField fx:id="filiereField"
+                           promptText="Filière *"
+                           styleClass="input-field">
+                    <font><Font size="14.0"/></font>
+                </TextField>
+            </VBox>
+
             <!-- Message d'erreur -->
-            <Label fx:id="errorLabel" text="" 
-                   style="-fx-text-fill: #f44336; -fx-font-size: 12px;"
-                   textAlignment="CENTER" 
-                   wrapText="true" />
-            
-            <!-- Bouton -->
-            <Button fx:id="joinButton" text="Rejoindre l'Examen" 
-                    onAction="#handleJoinExam"
-                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-pref-width: 200; -fx-pref-height: 40;" />
-        </VBox>
-        
-        <!-- Bouton retour -->
-        <Button text="Retour" onAction="#handleBack" 
-                style="-fx-background-color: #757575; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5;" />
-    </VBox>
+            <Label fx:id="errorLabel" text=""
+                   textAlignment="CENTER" wrapText="true"
+                   styleClass="error-label">
+                <font><Font size="12.0"/></font>
+            </Label>
 
-    <!-- Countdown Overlay (Initially Hidden) -->
-    <StackPane fx:id="countdownOverlay" visible="false" 
-               style="-fx-background-color: rgba(0, 0, 0, 0.9);"
-               AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
-               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-        <Label fx:id="countdownLabel" text="5" 
-               style="-fx-text-fill: white; -fx-font-size: 120px; -fx-font-weight: bold;" />
-    </StackPane>
+            <!-- Bouton Principal -->
+            <Button fx:id="joinButton" text="Rejoindre l'Examen"
+                    onAction="#handleJoinExam"
+                    prefHeight="52.0" prefWidth="400.0"
+                    styleClass="primary-button">
+                <font><Font size="16.0"/></font>
+                <VBox.margin>
+                    <Insets top="8.0"/>
+                </VBox.margin>
+            </Button>
+
+            <!-- Overlay Countdown (caché par défaut) -->
+            <StackPane fx:id="countdownOverlay" 
+                       prefHeight="300.0" prefWidth="400.0"
+                       visible="false"
+                       style="-fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 10;">
+                <Label fx:id="countdownLabel" text="5"
+                       style="-fx-text-fill: white; -fx-font-size: 72px; -fx-font-weight: bold;"/>
+            </StackPane>
+        </VBox>
+
+        <!-- Bouton Retour (en bas, discret) -->
+        <Button fx:id="backButton" text="Retour"
+                onAction="#handleBack"
+                styleClass="back-button">
+            <font><Font size="13.0"/></font>
+        </Button>
+    </VBox>
 </AnchorPane>

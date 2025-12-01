@@ -1,0 +1,111 @@
+/* ============================= GLOBAL ============================= */
+.root, .root-container {
+    -fx-background-color: linear-gradient(to bottom, #FFFFFF 0%, #F5F8FC 100%);
+    -fx-padding: 40;
+    -fx-font-family: "Inter", "Poppins", "Segoe UI", Arial;
+}
+
+/* ============================= TITRES ============================= */
+.main-title {
+    -fx-font-size: 34px;
+    -fx-text-fill: #1A3A52;
+    -fx-font-weight: 700;
+}
+
+.header-title {
+    -fx-text-fill: #0F4C75;
+    -fx-font-weight: 600;
+    -fx-font-size: 36px;
+}
+
+/* ============================= HEADER ICON ============================= */
+.header-icon {
+    -fx-effect: dropshadow(gaussian, rgba(15, 76, 117, 0.25), 18, 0.6, 0, 0);
+}
+
+.header-icon:hover {
+    -fx-effect: dropshadow(gaussian, rgba(15, 76, 117, 0.45), 24, 0.6, 0, 0);
+}
+
+/* ============================= CARDS ============================= */
+.exam-card {
+    -fx-background-color: linear-gradient(to bottom, #E8F4F8 0%, #D0EBF5 100%);
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-padding: 28;
+
+    /* Bordure bleu ciel dégradée */
+    -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #5BA4D0 0%, #2B7AA0 100%);
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+
+    -fx-alignment: center;
+    -fx-pref-width: 360;
+    -fx-pref-height: 460;
+
+    /* Ombre douce bleu */
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.35), 25, 0.6, 0, 8);
+}
+
+.exam-card:hover {
+    -fx-translate-y: -8;
+    -fx-background-color: linear-gradient(to bottom, #e5f7fe 0%, #e5f7fe 100%);
+    -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #3BA0D0 0%, #1565A0 100%);
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.55), 32, 0.6, 0, 12);
+}
+
+/* Icone à l'intérieur de la card */
+.card-icon {
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.40), 24, 0.6, 0, 0);
+}
+
+/* Titles inside cards */
+.card-title {
+    -fx-text-fill: #0F4C75;
+    -fx-font-weight: 700;
+    -fx-font-size: 22px;
+}
+
+.card-desc {
+    -fx-text-fill: #1A5A7A;
+    -fx-font-size: 13px;
+    -fx-line-spacing: 4;
+    -fx-opacity: 0.95;
+}
+
+/* ============================= BUTTONS ============================= */
+.exam-button {
+    -fx-background-color: linear-gradient(to bottom, #3BA0D0 0%, #2B7AA0 100%);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: 600;
+    -fx-font-size: 15px;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #1565A0;
+    -fx-border-width: 1.6;
+    -fx-padding: 0 18 0 18;
+    -fx-cursor: hand;
+    
+    /* Ombre bleu ciel */
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.45), 16, 0.6, 0, 0);
+}
+
+.exam-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #5BA4D0 0%, #3BA0D0 100%);
+    -fx-border-color: linear-gradient(to bottom, #2B7AA0 0%, #1565A0 100%);
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.70), 24, 0.6, 0, 0);
+}
+
+.exam-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #2B7AA0 0%, #1565A0 100%);
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.30), 10, 0.6, 0, 0);
+}
+
+/* ============================= NEON ICON ============================= */
+.neon-icon {
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.40), 20, 0.6, 0, 0);
+}
+
+.neon-icon:hover {
+    -fx-effect: dropshadow(gaussian, rgba(43, 122, 160, 0.60), 26, 0.6, 0, 0);
+}

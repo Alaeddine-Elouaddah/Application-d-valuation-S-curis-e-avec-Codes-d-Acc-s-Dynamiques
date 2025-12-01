@@ -25,7 +25,10 @@ public class HomeController {
             Stage stage = (Stage) createExamButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Créer un Examen");
-            stage.centerOnScreen();
+            stage.setFullScreen(false);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
+            stage.setFullScreenExitHint("");
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement de la page de création d'examen: " + e.getMessage());
             e.printStackTrace();
@@ -40,7 +43,10 @@ public class HomeController {
             Stage stage = (Stage) joinExamButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Rejoindre un Examen");
-            stage.centerOnScreen();
+            stage.setFullScreen(false);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
+            stage.setFullScreenExitHint("");
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement de la page de rejoindre un examen: " + e.getMessage());
             e.printStackTrace();

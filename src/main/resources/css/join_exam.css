@@ -1,0 +1,118 @@
+/* ============================= GLOBAL ============================= */
+.root-container {
+    -fx-background-color: linear-gradient(to bottom, #F0F2F5 0%, #E8EAED 100%);
+    -fx-font-family: "Inter", "Poppins", "Segoe UI", Arial;
+    -fx-padding: 0;
+}
+
+/* ============================= FORM CARD ============================= */
+.form-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 16;
+    -fx-padding: 48 40 48 40;
+    -fx-spacing: 20;
+    -fx-max-width: 480;
+    -fx-pref-width: 480;
+        -fx-pref-height: 420;     /* Hauteur préférée */
+    -fx-max-height: 420;      /* Hauteur maximale */
+
+
+    /* Ombre douce */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 20, 0.6, 0, 8);
+}
+
+/* ============================= TITRES ============================= */
+.form-title {
+    -fx-text-fill: #1A1A1A;
+    -fx-font-weight: 700;
+    -fx-font-size: 28px;
+    -fx-text-alignment: center;
+}
+
+.form-subtitle {
+    -fx-text-fill: #909090;
+    -fx-font-size: 14px;
+    -fx-text-alignment: center;
+    -fx-opacity: 0.92;
+    -fx-line-spacing: 4;
+}
+
+/* ============================= INPUT FIELDS ============================= */
+.input-field {
+    -fx-background-color: #FAFAFA;
+    -fx-background-insets: 0;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #E0E0E0;
+    -fx-border-width: 1;
+    -fx-text-fill: #1A1A1A;
+    -fx-prompt-text-fill: #999999;
+    -fx-padding: 14 16 14 16;
+    -fx-font-size: 14px;
+    -fx-cursor: text;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.input-field:focused {
+    -fx-border-color: #0078D4;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.20), 12, 0.6, 0, 0);
+}
+
+/* ============================= ERROR LABEL ============================= */
+.error-label {
+    -fx-text-fill: #D32F2F;
+    -fx-font-size: 12px;
+    -fx-font-weight: 500;
+    -fx-padding: 4 0 0 0;
+    -fx-min-height: 18;
+}
+
+/* ============================= BUTTONS ============================= */
+/* Bouton Principal (Bleu) */
+.primary-button {
+    -fx-background-color: linear-gradient(to bottom, #0078D4 0%, #006EBE 100%);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: 600;
+    -fx-font-size: 16px;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-width: 0;
+    -fx-padding: 14 28 14 28;
+    -fx-cursor: hand;
+
+    /* Ombre bleu */
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.30), 12, 0.6, 0, 4);
+}
+
+.primary-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #106EBE 0%, #0056A4 100%);
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.50), 18, 0.6, 0, 6);
+}
+
+.primary-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #0056A4 0%, #003D7A 100%);
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.20), 8, 0.6, 0, 2);
+}
+
+/* Bouton Retour (Minimaliste) */
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1A1A1A;
+    -fx-font-weight: 500;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-border-width: 0;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+    -fx-text-fill: #0078D4;
+}
+
+.back-button:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.10);
+}

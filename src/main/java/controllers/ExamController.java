@@ -265,9 +265,12 @@ public class ExamController {
             Parent root = loader.load();
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setFullScreen(false);
+            
             stage.setTitle("Système de Gestion d'Examens QCM");
-            stage.centerOnScreen();
+              stage.setFullScreen(false);
+            stage.setFullScreen(true);
+            stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
+            stage.setFullScreenExitHint("");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -9,6 +9,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.CreateExamController"
             prefHeight="700.0" prefWidth="900.0"
+            stylesheets="@../css/create_exam.css"
             style="-fx-background-color: #f5f5f5;">
     
     <ScrollPane fitToWidth="true" AnchorPane.bottomAnchor="0.0" 

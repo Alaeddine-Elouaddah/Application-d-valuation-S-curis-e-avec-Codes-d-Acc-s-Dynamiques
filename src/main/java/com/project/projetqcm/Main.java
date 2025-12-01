@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyCombination;
 
 public class Main extends Application {
 
@@ -15,12 +16,21 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
             Parent root = loader.load();
             
-            Scene scene = new Scene(root, 700, 500);
+            // Créer la scène sans dimensions fixes (elle occupera l'écran en fullscreen)
+            Scene scene = new Scene(root);
             
-            primaryStage.setTitle("Système de Gestion d'Examens QCMM");
+            primaryStage.setTitle("Système de Gestion d'Examens QCM");
             primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
-            primaryStage.centerOnScreen();
+            
+            // Activer le plein écran
+            primaryStage.setFullScreen(true);
+            
+            // Optionnel: permettre à l'utilisateur de quitter le fullscreen avec Escape
+            primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+            
+            // Optionnel: masquer le message "Appuyez sur ESC pour quitter"
+            primaryStage.setFullScreenExitHint("");
+            
             primaryStage.show();
             
         } catch (Exception e) {
