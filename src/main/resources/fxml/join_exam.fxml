@@ -50,7 +50,14 @@
 
                 <!-- Votre Nom -->
                 <TextField fx:id="studentNameField"
-                           promptText="Votre Nom"
+                           promptText="Votre Nom *"
+                           styleClass="input-field">
+                    <font><Font size="14.0"/></font>
+                </TextField>
+
+                <!-- Numéro de Liste -->
+                <TextField fx:id="listNumberField"
+                           promptText="Numéro de Liste (optionnel)"
                            styleClass="input-field">
                     <font><Font size="14.0"/></font>
                 </TextField>

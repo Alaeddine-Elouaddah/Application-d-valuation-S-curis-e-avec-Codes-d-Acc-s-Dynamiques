@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.ViewResultsController"
+            prefHeight="800.0" prefWidth="1400.0"
+            stylesheets="@../css/view_results.css"
+            styleClass="root-container">
+    
+    <!-- En-tête -->
+    <top>
+        <VBox spacing="20.0" styleClass="header-section">
+            <padding>
+                <Insets top="30.0" bottom="20.0" left="40.0" right="40.0" />
+            </padding>
+            
+            <!-- Titre -->
+            <Label text="📊 Résultats des Étudiants" styleClass="page-title">
+                <font><Font size="32.0" /></font>
+            </Label>
+            
+            <!-- Barre de filtres -->
+            <HBox spacing="15.0" alignment="CENTER_LEFT">
+                <Label text="Filtrer par examen:" styleClass="filter-label">
+                    <font><Font size="14.0" /></font>
+                </Label>
+                <ComboBox fx:id="examFilterCombo" prefWidth="300.0" promptText="Tous les examens" />
+                <Button text="Actualiser" onAction="#handleRefresh" styleClass="refresh-button" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="totalStudentsLabel" text="Total: 0 étudiants" styleClass="stats-label">
+                    <font><Font size="13.0" /></font>
+                </Label>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- Tableau des résultats -->
+    <center>
+        <VBox spacing="10.0">
+            <padding>
+                <Insets top="10.0" bottom="10.0" left="40.0" right="40.0" />
+            </padding>
+            
+            <TableView fx:id="resultsTable" styleClass="results-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="nameColumn" text="Nom de l'étudiant" prefWidth="200.0" />
+                    <TableColumn fx:id="listNumberColumn" text="N° Liste" prefWidth="100.0" />
+                    <TableColumn fx:id="filiereColumn" text="Filière" prefWidth="150.0" />
+                    <TableColumn fx:id="scoreColumn" text="Note /20" prefWidth="100.0" />
+                    <TableColumn fx:id="examColumn" text="Examen" prefWidth="250.0" />
+                    <TableColumn fx:id="dateColumn" text="Date" prefWidth="150.0" />
+                </columns>
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                </columnResizePolicy>
+            </TableView>
+        </VBox>
+    </center>
+    
+    <!-- Pied de page avec statistiques -->
+    <bottom>
+        <HBox spacing="30.0" alignment="CENTER_LEFT" styleClass="footer-section">
+            <padding>
+                <Insets top="20.0" bottom="30.0" left="40.0" right="40.0" />
+            </padding>
+            
+            <VBox spacing="5.0">
+                <Label text="Statistiques" styleClass="stats-title">
+                    <font><Font size="14.0" /></font>
+                </Label>
+                <Label fx:id="statsLabel" text="Moyenne: -- | Min: -- | Max: --" styleClass="stats-value">
+                    <font><Font size="13.0" /></font>
+                </Label>
+            </VBox>
+            
+            <Region HBox.hgrow="ALWAYS" />
+            
+            <Button text="← Retour" onAction="#handleBack" styleClass="back-button" prefWidth="120.0" prefHeight="40.0">
+                <font><Font size="14.0" /></font>
+            </Button>
+        </HBox>
+    </bottom>
+</BorderPane>

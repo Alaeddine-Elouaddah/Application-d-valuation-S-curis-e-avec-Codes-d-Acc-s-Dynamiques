@@ -24,6 +24,9 @@ public class JoinExamController {
     private TextField studentNameField;
 
     @FXML
+    private TextField listNumberField;
+
+    @FXML
     private TextField filiereField;
 
     @FXML
@@ -61,7 +64,53 @@ public class JoinExamController {
         }
 
         String examCode = examCodeField.getText().trim().toUpperCase();
+
+        // Si le code commence par PROF-, on considère que c'est un code professeur
+        if (examCode.startsWith("PROF-")) {
+            if (examCode.isEmpty()) {
+                showError("Veuillez entrer le code professeur!");
+                examCodeField.requestFocus();
+                return;
+            }
+
+            try {
+                Exam exam = examRepository.findByProfessorCode(examCode);
+                if (exam == null) {
+                    showError("Code professeur invalide! Vérifiez le code et réessayez.");
+                    examCodeField.selectAll();
+                    examCodeField.requestFocus();
+                    return;
+                }
+
+                // Ouvrir l'écran des résultats filtré sur cet examen
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/view_results.fxml"));
+                Parent root = loader.load();
+
+                ViewResultsController controller = loader.getController();
+                controller.showExamResults(exam);
+
+                Stage stage = (Stage) joinButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Résultats - " + exam.getTitle());
+                stage.setFullScreen(false);
+                stage.setFullScreen(true);
+                stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
+                stage.setFullScreenExitHint("");
+
+            } catch (IOException e) {
+                showError("Erreur lors de l'ouverture des résultats: " + e.getMessage());
+                e.printStackTrace();
+            } catch (Exception e) {
+                showError("Erreur lors de la recherche de l'examen: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+            return;
+        }
+
+        // Sinon, flux normal pour les étudiants
         String studentName = studentNameField.getText().trim();
+        String listNumber = listNumberField.getText().trim();
         String filiere = filiereField.getText().trim();
 
         // Validation
@@ -91,7 +140,7 @@ public class JoinExamController {
         }
 
         try {
-            // Chercher l'examen par code
+            // Chercher l'examen par code étudiant
             Exam exam = examRepository.findByExamId(examCode);
 
             if (exam == null) {
@@ -106,8 +155,8 @@ public class JoinExamController {
                 return;
             }
 
-            // Afficher les informations de l'examen
-            showExamInfo(exam, studentName, filiere);
+            // Afficher les informations de l'examen pour l'étudiant
+            showExamInfo(exam, studentName, listNumber, filiere);
 
         } catch (Exception e) {
             showError("Erreur lors de la recherche de l'examen: " + e.getMessage());
@@ -115,27 +164,33 @@ public class JoinExamController {
         }
     }
 
-    private void showExamInfo(Exam exam, String studentName, String filiere) {
+    private void showExamInfo(Exam exam, String studentName, String listNumber, String filiere) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Vous allez rejoindre l'examen:");
+
+        String studentInfo = "Étudiant: " + studentName;
+        if (listNumber != null && !listNumber.isEmpty()) {
+            studentInfo += "\nNuméro: " + listNumber;
+        }
+        studentInfo += "\nFilière: " + filiere;
+
         alert.setContentText(
                 "Titre: " + exam.getTitle() + "\n" +
-                "Description: " + (exam.getDescription().isEmpty() ? "Aucune" : exam.getDescription()) + "\n" +
-                "Durée: " + exam.getDurationMinutes() + " minutes\n" +
-                "Nombre de questions: " + exam.getQuestionIds().size() + "\n\n" +
-                "Étudiant: " + studentName + "\n" +
-                "Filière: " + filiere + "\n\n" +
-                "Êtes-vous prêt à commencer?");
+                        "Description: " + (exam.getDescription().isEmpty() ? "Aucune" : exam.getDescription()) + "\n" +
+                        "Durée: " + exam.getDurationMinutes() + " minutes\n" +
+                        "Nombre de questions: " + exam.getQuestionIds().size() + "\n\n" +
+                        studentInfo + "\n\n" +
+                        "Êtes-vous prêt à commencer?");
 
         alert.showAndWait().ifPresent(response -> {
             if (response == javafx.scene.control.ButtonType.OK) {
-                startCountdown(exam, studentName, filiere);
+                startCountdown(exam, studentName, listNumber, filiere);
             }
         });
     }
 
-    private void startCountdown(Exam exam, String studentName, String filiere) {
+    private void startCountdown(Exam exam, String studentName, String listNumber, String filiere) {
         if (countdownOverlay != null) {
             countdownOverlay.setVisible(true);
         }
@@ -151,7 +206,7 @@ public class JoinExamController {
                     });
                     Thread.sleep(1000);
                 }
-                javafx.application.Platform.runLater(() -> startExam(exam, studentName, filiere));
+                javafx.application.Platform.runLater(() -> startExam(exam, studentName, listNumber, filiere));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -160,13 +215,13 @@ public class JoinExamController {
         thread.start();
     }
 
-    private void startExam(Exam exam, String studentName, String filiere) {
+    private void startExam(Exam exam, String studentName, String listNumber, String filiere) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/exam.fxml"));
             Parent root = loader.load();
 
             ExamController controller = loader.getController();
-            controller.initData(exam, studentName, filiere);
+            controller.initData(exam, studentName, listNumber, filiere);
 
             Stage stage = (Stage) joinButton.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -189,7 +244,7 @@ public class JoinExamController {
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Système de Gestion d'Examens QCM");
-              stage.setFullScreen(false);
+            stage.setFullScreen(false);
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
             stage.setFullScreenExitHint("");

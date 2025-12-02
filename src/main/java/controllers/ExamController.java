@@ -16,6 +16,7 @@ import models.Question;
 import models.Choice;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ public class ExamController {
 
     private Exam exam;
     private String studentName;
+    private String listNumber;
     private String filiere;
     private List<Question> questions;
     private int currentQuestionIndex = 0;
@@ -52,16 +54,21 @@ public class ExamController {
                                                                           // indices
     private Timeline timeline;
     private int timeSeconds;
+    private LocalDateTime startTime; // Pour enregistrer l'heure de début
 
     private QuestionRepository questionRepository = new QuestionRepository();
 
-    public void initData(Exam exam, String studentName, String filiere) {
+    public void initData(Exam exam, String studentName, String listNumber, String filiere) {
         this.exam = exam;
         this.studentName = studentName;
+        this.listNumber = listNumber;
         this.filiere = filiere;
+        this.startTime = LocalDateTime.now(); // Enregistrer l'heure de début
 
         examTitleLabel.setText(exam.getTitle());
-        studentInfoLabel.setText("Étudiant: " + studentName + " (" + filiere + ")");
+        studentInfoLabel.setText("Étudiant: " + studentName +
+                (listNumber != null && !listNumber.isEmpty() ? " (" + listNumber + ")" : "") +
+                " - " + filiere);
 
         // Charger les questions
         if (exam.getQuestionIds() != null && !exam.getQuestionIds().isEmpty()) {
@@ -252,8 +259,54 @@ public class ExamController {
         Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
         resultAlert.setTitle("Résultats de l'examen");
         resultAlert.setHeaderText("Examen Terminé !");
-        resultAlert.setContentText("Votre score est de : " + score + " / " + totalQuestions + "\n\n" +
+
+        // Convertir le score en note sur 20
+        double scoreOn20 = (score * 20.0) / totalQuestions;
+
+        resultAlert.setContentText("Votre score est de : " + score + " / " + totalQuestions + "\n" +
+                "Note sur 20: " + String.format("%.2f", scoreOn20) + "/20\n\n" +
                 "Merci d'avoir passé l'examen.");
+
+        // Sauvegarder TOUTES les données dans la collection "Student"
+        try {
+            database.StudentRepository studentRepo = new database.StudentRepository();
+            models.Student student = new models.Student(studentName, listNumber, filiere);
+
+            // Ajouter TOUTES les informations d'examen
+            student.setExamId(exam.getId());
+            student.setScore(scoreOn20);
+            student.setStartTime(startTime);
+            student.setEndTime(java.time.LocalDateTime.now());
+            student.setWarningCount(0);
+
+            // Sauvegarder TOUTES les réponses
+            for (int i = 0; i < questions.size(); i++) {
+                Question q = questions.get(i);
+                List<Integer> userIndices = studentAnswers.getOrDefault(i, new ArrayList<>());
+                models.Answer answer = new models.Answer(q.getId());
+                answer.setSelectedChoiceIndices(userIndices);
+                student.getAnswers().add(answer);
+            }
+
+            System.out.println("DEBUG: Sauvegarde dans la collection 'Student'...");
+            System.out.println("  - Nom: " + studentName);
+            System.out.println("  - Numéro de liste: "
+                    + (listNumber != null && !listNumber.isEmpty() ? listNumber : "Non fourni"));
+            System.out.println("  - Filière: " + filiere);
+            System.out.println("  - Note: " + String.format("%.2f", scoreOn20) + "/20");
+            System.out.println("  - Examen ID: " + exam.getId());
+            System.out.println("  - Nombre de réponses: " + student.getAnswers().size());
+
+            // Sauvegarder dans MongoDB - collection "Student"
+            studentRepo.save(student);
+
+            System.out.println("✓ TOUTES les données sauvegardées dans la collection 'Student'!");
+            System.out.println("  - ID généré: " + student.getId());
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors de la sauvegarde: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         resultAlert.showAndWait();
         returnToHome();
@@ -265,9 +318,9 @@ public class ExamController {
             Parent root = loader.load();
             Stage stage = (Stage) submitButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            
+
             stage.setTitle("Système de Gestion d'Examens QCM");
-              stage.setFullScreen(false);
+            stage.setFullScreen(false);
             stage.setFullScreen(true);
             stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
             stage.setFullScreenExitHint("");

@@ -48,40 +48,28 @@
                     <Insets top="40.0" bottom="40.0" left="35.0" right="35.0" />
                 </padding>
                 
-                <!-- Icône 3D -->
-                <Label text="🟦" 
-                       style="-fx-font-size: 80px;">
-                </Label>
+                <Label text="🟦" style="-fx-font-size: 80px;"></Label>
                 
-                <!-- Titre -->
                 <Label text="Créer un examen" 
                        textAlignment="CENTER"
                        styleClass="card-title">
-                    <font>
-                        <Font size="22.0" />
-                    </font>
+                    <font><Font size="22.0" /></font>
                 </Label>
                 
-                <!-- Description -->
                 <Label text="Planifiez, personnalisez et&#10;publiez en quelques minutes" 
                        textAlignment="CENTER"
                        wrapText="true"
                        styleClass="card-description">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
+                    <font><Font size="13.0" /></font>
                 </Label>
                 
-                <!-- Bouton -->
                 <Button fx:id="createExamButton" 
                         text="Créer" 
                         onAction="#handleCreateExam"
                         prefHeight="50.0" 
                         prefWidth="220.0"
                         styleClass="exam-button">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
+                    <font><Font size="15.0" /></font>
                 </Button>
             </VBox>
             
@@ -93,40 +81,28 @@
                     <Insets top="40.0" bottom="40.0" left="35.0" right="35.0" />
                 </padding>
                 
-                <!-- Icône 3D -->
-                <Label text="📱" 
-                       style="-fx-font-size: 80px;">
-                </Label>
+                <Label text="📱" style="-fx-font-size: 80px;"></Label>
                 
-                <!-- Titre -->
                 <Label text="Rejoindre un examen" 
                        textAlignment="CENTER"
                        styleClass="card-title">
-                    <font>
-                        <Font size="22.0" />
-                    </font>
+                    <font><Font size="22.0" /></font>
                 </Label>
                 
-                <!-- Description -->
                 <Label text="Entrez votre code d'examen&#10;et commencez." 
                        textAlignment="CENTER"
                        wrapText="true"
                        styleClass="card-description">
-                    <font>
-                        <Font size="13.0" />
-                    </font>
+                    <font><Font size="13.0" /></font>
                 </Label>
                 
-                <!-- Bouton -->
                 <Button fx:id="joinExamButton" 
                         text="Rejoindre" 
                         onAction="#handleJoinExam"
                         prefHeight="50.0" 
                         prefWidth="220.0"
                         styleClass="exam-button">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
+                    <font><Font size="15.0" /></font>
                 </Button>
             </VBox>
         </HBox>

@@ -65,7 +65,15 @@ public class ExamRepository {
         return null;
     }
 
-    public List<Exam> findByProfessorId(ObjectId professorId) {
+    public Exam findByProfessorCode(String professorCode) {
+        Document doc = collection.find(Filters.eq("professorCode", professorCode)).first();
+        if (doc != null) {
+            return Exam.fromDocument(doc);
+        }
+        return null;
+    }
+
+    public List<Exam> findByProfessorId(String professorId) {
         List<Exam> exams = new ArrayList<>();
         for (Document doc : collection.find(Filters.eq("professorId", professorId))) {
             exams.add(Exam.fromDocument(doc));
@@ -89,6 +97,14 @@ public class ExamRepository {
 
     public void delete(ObjectId id) {
         collection.deleteOne(Filters.eq("_id", id));
+    }
+
+    public List<Exam> findAll() {
+        List<Exam> exams = new ArrayList<>();
+        for (Document doc : collection.find()) {
+            exams.add(Exam.fromDocument(doc));
+        }
+        return exams;
     }
 
     public boolean examIdExists(String examId) {

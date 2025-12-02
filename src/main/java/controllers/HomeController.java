@@ -10,13 +10,13 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HomeController {
-    
+
     @FXML
     private Button createExamButton;
-    
+
     @FXML
     private Button joinExamButton;
-    
+
     @FXML
     private void handleCreateExam() {
         try {
@@ -34,7 +34,7 @@ public class HomeController {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void handleJoinExam() {
         try {
@@ -52,4 +52,5 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+
 }
