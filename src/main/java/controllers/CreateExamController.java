@@ -4,6 +4,8 @@ import database.ExamRepository;
 import database.QuestionRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.util.Duration;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,7 +13,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.scene.Node;
+import javafx.util.Duration;
 import database.MongoConnection;
 import models.Choice;
 import models.Exam;
@@ -159,6 +164,46 @@ public class CreateExamController {
                     ex.printStackTrace();
                     showSuccess("Examen créé! Code: " + exam.getExamId());
                 }
+                // Après la fermeture du dialog, revenir à l'accueil avec la même transition que handleBack()
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
+                    Parent root = loader.load();
+                    Stage stage = (Stage) createButton.getScene().getWindow();
+                    Scene scene = stage.getScene();
+
+                    if (scene != null && scene.getRoot() != null) {
+                        Node currentRoot = scene.getRoot();
+                        FadeTransition fadeOut = new FadeTransition(Duration.millis(200), currentRoot);
+                        fadeOut.setFromValue(1.0);
+                        fadeOut.setToValue(0.0);
+                        fadeOut.setOnFinished(event -> {
+                            // Replace root on the existing scene to preserve fullscreen and styles
+                            scene.setRoot(root);
+
+                            // Fade in the new root
+                            root.setOpacity(0.0);
+                            FadeTransition fadeIn = new FadeTransition(Duration.millis(200), root);
+                            fadeIn.setFromValue(0.0);
+                            fadeIn.setToValue(1.0);
+                            fadeIn.play();
+
+                            // Preserve window state
+                            stage.setFullScreen(true);
+                            stage.setTitle("Système de Gestion d'Examens QCM");
+                           
+                        });
+                        fadeOut.play();
+                    } else {
+                        Scene newScene = new Scene(root);
+                        stage.setScene(newScene);
+                        stage.setFullScreen(true);
+                        stage.setTitle("Système de Gestion d'Examens QCM");
+                        
+                    }
+                } catch (IOException ioe) {
+                    System.err.println("Erreur lors du retour à l'accueil après création: " + ioe.getMessage());
+                    ioe.printStackTrace();
+                }
             });
 
             // Désactiver le bouton de création
@@ -188,15 +233,43 @@ public class CreateExamController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/home.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Système de Gestion d'Examens QCM");
-            stage.centerOnScreen();
+            Scene scene = stage.getScene();
+
+            if (scene != null && scene.getRoot() != null) {
+                Node currentRoot = scene.getRoot();
+                FadeTransition fadeOut = new FadeTransition(Duration.millis(200), currentRoot);
+                fadeOut.setFromValue(1.0);
+                fadeOut.setToValue(0.0);
+                fadeOut.setOnFinished(event -> {
+                    // Replace root on the existing scene to preserve fullscreen and styles
+                    scene.setRoot(root);
+
+                    // Fade in the new root
+                    root.setOpacity(0.0);
+                    FadeTransition fadeIn = new FadeTransition(Duration.millis(200), root);
+                    fadeIn.setFromValue(0.0);
+                    fadeIn.setToValue(1.0);
+                    fadeIn.play();
+
+                    // Preserve window state
+                    stage.setFullScreen(true);
+                    stage.setTitle("Système de Gestion d'Examens QCM");
+                   
+                });
+                fadeOut.play();
+            } else {
+                // Fallback: create a new scene if none exists
+                Scene newScene = new Scene(root);
+                stage.setScene(newScene);
+                stage.setFullScreen(true);
+                stage.setTitle("Système de Gestion d'Examens QCM");
+                
+            }
         } catch (IOException e) {
             System.err.println("Erreur lors du retour à l'accueil: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
     private void showError(String message) {
         statusLabel.setText(message);
         statusLabel.setStyle("-fx-text-fill: #f44336; -fx-font-size: 12px;");

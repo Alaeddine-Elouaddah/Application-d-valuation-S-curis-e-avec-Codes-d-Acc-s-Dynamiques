@@ -78,14 +78,25 @@ public class Exam {
         if (doc.containsKey("_id")) {
             exam.setId(doc.getObjectId("_id"));
         }
-        exam.setExamId(doc.getString("examId"));
-        exam.setTitle(doc.getString("title"));
-        exam.setDescription(doc.getString("description"));
-        exam.setProfessorId(doc.getString("professorId"));
+
+        // helper local pour récupérer des "strings" sûrs
+        java.util.function.BiFunction<Document, String, String> getStringSafe = (d, key) -> {
+            Object val = d.get(key);
+            if (val == null) return null;
+            if (val instanceof String) return (String) val;
+            if (val instanceof ObjectId) return ((ObjectId) val).toString();
+            return val.toString();
+        };
+
+        // champs qui peuvent être stockés comme String ou ObjectId
+        exam.setExamId(getStringSafe.apply(doc, "examId"));
+        exam.setTitle(getStringSafe.apply(doc, "title"));
+        exam.setDescription(getStringSafe.apply(doc, "description"));
+        exam.setProfessorId(getStringSafe.apply(doc, "professorId"));
+        exam.setProfessorCode(getStringSafe.apply(doc, "professorCode"));
+
         exam.setDurationMinutes(doc.getInteger("durationMinutes", 60));
         exam.setActive(doc.getBoolean("isActive", true));
-
-        exam.setProfessorCode(doc.getString("professorCode"));
 
         List<ObjectId> questionIds = doc.getList("questionIds", ObjectId.class);
         if (questionIds != null) {

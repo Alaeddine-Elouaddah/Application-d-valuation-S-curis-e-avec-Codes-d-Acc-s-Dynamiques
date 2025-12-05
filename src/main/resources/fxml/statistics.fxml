@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.StatisticsController"
+            prefWidth="1000.0" prefHeight="700.0"
+            stylesheets="@../css/view_results.css">
+
+    <top>
+        <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-padding: 16;">
+            <Button fx:id="backButton" text="← Retour" onAction="#handleBackToResults" styleClass="back-button"/>
+            <Label text="Statistiques" style="-fx-font-size:18; -fx-font-weight:700;" />
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="12.0">
+            <Label text="Page des statistiques (placeholder)" style="-fx-font-size:14;" />
+            <Label text="Ici vous pourrez afficher graphiques et métriques." style="-fx-text-fill:#64748b;" />
+        </VBox>
+    </center>
+</BorderPane>
