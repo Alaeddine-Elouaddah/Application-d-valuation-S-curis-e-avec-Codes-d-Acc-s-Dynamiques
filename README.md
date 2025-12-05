@@ -23,7 +23,7 @@ mvnw dependency:resolve
 mvnw clean compile
 ```
 
-### 4. Lancer l'application//
+### 4. Lancer l'application
 
 **Option 1 - Script Windows (recommandé):**
 ```bash
