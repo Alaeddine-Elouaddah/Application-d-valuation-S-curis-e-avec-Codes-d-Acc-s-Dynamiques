@@ -75,6 +75,7 @@ public class ViewResultsController {
     private int currentPage = 1;
     private int pageSize = 10;
     private int totalPages = 1;
+    private Exam examFilter =null;
 
     @FXML
     public void initialize() {
@@ -196,6 +197,11 @@ public class ViewResultsController {
             Map<ObjectId, String> examTitles = new HashMap<>();
 
             for (Student student : students) {
+                // Si un exam filter est défini, ignorer les étudiants d'autres examens
+                if (examFilter != null && !student.getExamId().equals(examFilter.getId())) {
+                    continue;
+                }
+
                 // Récupérer le titre de l'examen (avec cache)
                 String examTitle = examTitles.get(student.getExamId());
                 if (examTitle == null) {
@@ -229,7 +235,6 @@ public class ViewResultsController {
             showError("Impossible de charger les résultats: " + e.getMessage());
         }
     }
-
     private void setupFilterListener() {
         examFilterCombo.setOnAction(event -> applyFilters());
     }
@@ -285,18 +290,29 @@ public class ViewResultsController {
         if (nextButton != null) nextButton.setDisable(currentPage >= totalPages);
     }
 
-    public void showExamResults(Exam exam) {
+   public void showExamResults(Exam exam) {
         if (exam == null) {
             return;
         }
 
-        // Sélectionner l'examen dans la combo si présent
+        // Définir le filtre d'examen pour les professeurs
+        this.examFilter = exam;
+
+        // Sélectionner l'examen dans la combo et la désactiver
         if (examFilterCombo != null) {
             examFilterCombo.setValue(exam);
+            examFilterCombo.setDisable(true);  // Empêcher le professeur de changer d'examen
         }
 
+        // Désactiver la barre de recherche pour les professeurs (optionnel)
+        if (searchField != null) {
+            searchField.clear();
+        }
+
+        // Charger les résultats spécifiques à cet examen
+        loadAllResults();
         applyFilters();
-    }
+}
 
     private void updateStatistics(ObservableList<StudentResult> results) {
         if (results == null || results.isEmpty()) {
@@ -377,14 +393,40 @@ public class ViewResultsController {
         }
     }
 
-    @FXML
+ @FXML
     private void openStatistics(MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/statistics.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) resultsTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Statistiques");
+            Scene scene = stage.getScene();
+
+            if (scene != null && scene.getRoot() != null) {
+                Parent currentRoot = scene.getRoot();
+                FadeTransition fadeOut = new FadeTransition(Duration.millis(200), currentRoot);
+                fadeOut.setFromValue(1.0);
+                fadeOut.setToValue(0.0);
+                fadeOut.setOnFinished(evt -> {
+                    scene.setRoot(root);
+                    root.setOpacity(0.0);
+                    FadeTransition fadeIn = new FadeTransition(Duration.millis(200), root);
+                    fadeIn.setFromValue(0.0);
+                    fadeIn.setToValue(1.0);
+                    fadeIn.play();
+
+                    stage.setTitle("Statistiques");
+                    stage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+                    stage.setFullScreenExitHint("");
+                    javafx.application.Platform.runLater(() -> stage.setFullScreen(true));
+                });
+                fadeOut.play();
+            } else {
+                stage.setScene(new Scene(root));
+                stage.setTitle("Statistiques");
+                stage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
+                stage.setFullScreenExitHint("");
+                stage.setFullScreen(true);
+            }
         } catch (IOException e) {
             System.err.println("Impossible d'ouvrir la page des statistiques: " + e.getMessage());
             e.printStackTrace();

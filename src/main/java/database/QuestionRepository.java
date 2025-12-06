@@ -38,6 +38,26 @@ public class QuestionRepository {
         return null;
     }
 
+    public List<Question> findAll() {
+        List<Question> questions = new ArrayList<>();
+        try {
+            if (collection != null) {
+                for (Document doc : collection.find()) {
+                    Question question = Question.fromDocument(doc);
+                    if (question != null) {
+                        questions.add(question);
+                    }
+                }
+            } else {
+                System.err.println("Collection is null in QuestionRepository.findAll()");
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la lecture des questions: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return questions;
+    }
+
     public List<Question> findByIds(List<ObjectId> ids) {
         List<Question> questions = new ArrayList<>();
         for (ObjectId id : ids) {

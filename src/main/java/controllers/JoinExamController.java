@@ -60,43 +60,46 @@ public class JoinExamController {
         examCodeField.requestFocus();
     }
 
-    @FXML
+ @FXML
     private void handleJoinExam() {
         if (errorLabel != null) errorLabel.setText("");
 
         String examCode = examCodeField.getText().trim().toUpperCase();
 
-        // Code professeur
-        if (examCode.startsWith("PROF-")) {
-            if (examCode.isEmpty()) {
-                showError("Veuillez entrer le code professeur!");
-                examCodeField.requestFocus();
-                return;
-            }
+        if (examCode.isEmpty()) {
+            showError("Veuillez entrer un code!");
+            examCodeField.requestFocus();
+            return;
+        }
 
+        // Essayer d'abord comme code professeur (8 caractères sans PROF-)
+        if (examCode.length() == 8) {
             try {
                 Exam exam = examRepository.findByProfessorCode(examCode);
-                if (exam == null) {
-                    showError("Code professeur invalide! Vérifiez le code et réessayez.");
-                    examCodeField.selectAll();
-                    examCodeField.requestFocus();
+                if (exam != null) {
+                    // Code professeur trouvé
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/view_results.fxml"));
+                    Parent root = loader.load();
+                    ViewResultsController controller = loader.getController();
+                    controller.showExamResults(exam);
+                    
+                    Stage stage = (Stage) joinButton.getScene().getWindow();
+                    setSceneWithFade(stage, root, "Résultats - " + exam.getTitle());
                     return;
                 }
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/view_results.fxml"));
-                Parent root = loader.load();
-                ViewResultsController controller = loader.getController();
-                controller.showExamResults(exam);
-
-                Stage stage = (Stage) joinButton.getScene().getWindow();
-                setSceneWithFade(stage, root, "Résultats - " + exam.getTitle());
-
             } catch (IOException | RuntimeException e) {
                 showError("Erreur lors de l'ouverture des résultats: " + e.getMessage());
                 e.printStackTrace();
+                return;
             }
+        }
 
-            return;
+        // Essayer comme code étudiant (6 caractères)
+        if (examCode.length() != 6) { 
+            showError("Le code doit contenir 6 caractères (étudiant) ou 8 caractères (professeur)!"); 
+            examCodeField.selectAll(); 
+            examCodeField.requestFocus(); 
+            return; 
         }
 
         // Flux étudiant
@@ -104,10 +107,8 @@ public class JoinExamController {
         String listNumber = listNumberField.getText().trim();
         String filiere = filiereField.getText().trim();
 
-        if (examCode.isEmpty()) { showError("Veuillez entrer le code d'examen!"); examCodeField.requestFocus(); return; }
         if (studentName.isEmpty()) { showError("Veuillez entrer votre nom!"); studentNameField.requestFocus(); return; }
         if (filiere.isEmpty()) { showError("Veuillez entrer votre filière!"); filiereField.requestFocus(); return; }
-        if (examCode.length() != 6) { showError("Le code d'examen doit contenir 6 caractères!"); examCodeField.selectAll(); examCodeField.requestFocus(); return; }
 
         try {
             Exam exam = examRepository.findByExamId(examCode);

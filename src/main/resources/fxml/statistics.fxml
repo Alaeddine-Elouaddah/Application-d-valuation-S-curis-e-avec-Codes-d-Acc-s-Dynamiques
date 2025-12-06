@@ -1,26 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.StatisticsController"
-            prefWidth="1000.0" prefHeight="700.0"
-            stylesheets="@../css/view_results.css">
+            prefWidth="1400.0" prefHeight="1000.0"
+            stylesheets="@../css/view_results.css,@../css/statistics.css">
 
     <top>
         <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-padding: 16;">
             <Button fx:id="backButton" text="← Retour" onAction="#handleBackToResults" styleClass="back-button"/>
-            <Label text="Statistiques" style="-fx-font-size:18; -fx-font-weight:700;" />
+            <Label text="Statistiques" style="-fx-font-size:24; -fx-font-weight:700; -fx-text-fill:white;" />
+            <Region HBox.hgrow="ALWAYS" />
         </HBox>
     </top>
 
     <center>
-        <VBox alignment="CENTER" spacing="12.0">
-            <Label text="Page des statistiques (placeholder)" style="-fx-font-size:14;" />
-            <Label text="Ici vous pourrez afficher graphiques et métriques." style="-fx-text-fill:#64748b;" />
+        <VBox spacing="24.0" alignment="TOP_LEFT" VBox.vgrow="ALWAYS" style="-fx-padding: 24;">
+
+            <!-- SECTION 1: 4 Cartes Statistiques (Haut - Centrées sur une même ligne) -->
+            <HBox spacing="16.0" alignment="CENTER" HBox.hgrow="ALWAYS">
+
+                <!-- Carte 1: Pourcentage de réussite (Orange) -->
+                <VBox spacing="8.0" alignment="CENTER_LEFT" styleClass="stat-card" style="-fx-background-color: #FF8C42;" prefWidth="280.0" prefHeight="140.0">
+                    <Label fx:id="successPercentLabel" text="60%" styleClass="stat-card-value" />
+                    <Label text="Pourcentage de réussite" styleClass="stat-card-label" />
+                </VBox>
+
+                <!-- Carte 2: Moyenne générale (Purple) -->
+                <VBox spacing="8.0" alignment="CENTER_LEFT" styleClass="stat-card" style="-fx-background-color: #7C3AED;" prefWidth="280.0" prefHeight="140.0">
+                    <Label fx:id="averageLabel" text="8.00/20" styleClass="stat-card-value" />
+                    <Label text="Moyenne générale" styleClass="stat-card-label" />
+                </VBox>
+
+                <!-- Carte 3: Meilleure note (Pink/Magenta) -->
+                <VBox spacing="8.0" alignment="CENTER_LEFT" styleClass="stat-card" style="-fx-background-color: #EC4899;" prefWidth="280.0" prefHeight="140.0">
+                    <Label fx:id="maxScoreLabel" text="20.00" styleClass="stat-card-value" />
+                    <Label text="Meilleure note" styleClass="stat-card-label" />
+                </VBox>
+
+                <!-- Carte 4: Pire note (Red/Crimson) -->
+                <VBox spacing="8.0" alignment="CENTER_LEFT" styleClass="stat-card" style="-fx-background-color: #EF4444;" prefWidth="280.0" prefHeight="140.0">
+                    <Label fx:id="minScoreLabel" text="0.00" styleClass="stat-card-value" />
+                    <Label text="Pire note" styleClass="stat-card-label" />
+                </VBox>
+
+            </HBox>
+
+            <!-- SECTION 2: Graphiques Principaux (Gauche: Pie + Intervalle | Droite: Distribution + Pie Question) -->
+            <HBox spacing="24.0" alignment="TOP_LEFT" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+
+                <!-- COLONNE GAUCHE: Pie Chart Global + Intervalle -->
+                <VBox spacing="24.0" alignment="TOP_LEFT" prefWidth="500.0">
+
+                    <!-- Pie Chart Global -->
+                    <VBox spacing="12.0" alignment="TOP_CENTER" styleClass="chart-panel" VBox.vgrow="ALWAYS">
+                        <Label text="Pourcentage de réussite" style="-fx-font-size:16; -fx-font-weight:700;" />
+                        <PieChart fx:id="successPieChart" prefHeight="280.0" prefWidth="450.0" />
+                    </VBox>
+
+                    <!-- Intervalle Chart (Bas Gauche) -->
+                    <VBox spacing="12.0" alignment="TOP_CENTER" styleClass="chart-panel" VBox.vgrow="ALWAYS">
+                        <Label text="Répartition des notes par intervalle" style="-fx-font-size:16; -fx-font-weight:700;" />
+                        <BarChart fx:id="rangeBarChart" prefHeight="250.0" VBox.vgrow="ALWAYS" title="">
+                            <xAxis>
+                                <CategoryAxis fx:id="rangeCategoryAxis" label="Intervalle" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="rangeNumberAxis" label="Nombre d'étudiants" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+
+                </VBox>
+
+                <!-- COLONNE DROITE: Distribution + Pie Par Question -->
+                <VBox spacing="24.0" alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
+
+                    <!-- Distribution Chart (Haut Droite) -->
+                    <VBox spacing="12.0" alignment="TOP_CENTER" styleClass="chart-panel" VBox.vgrow="ALWAYS">
+                        <Label text="Distribution des notes (1 à 20)" style="-fx-font-size:16; -fx-font-weight:700;" />
+                        <BarChart fx:id="scoreBarChart" prefHeight="280.0" VBox.vgrow="ALWAYS" title="">
+                            <xAxis>
+                                <CategoryAxis fx:id="categoryAxis" label="Note" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="numberAxis" label="Nombre d'étudiants" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <!-- Pie Chart Par Question (Bas Droite) - ENHANCED DESIGN -->
+                    <VBox spacing="14.0" alignment="TOP_LEFT" styleClass="question-panel" VBox.vgrow="ALWAYS">
+                        
+                        <!-- Header avec titre -->
+                        <VBox spacing="0" alignment="TOP_LEFT">
+                            <Label text="Réussite vs Échec par question" styleClass="question-title" />
+                        </VBox>
+                        
+                        <!-- Dropdown pour sélectionner la question -->
+                        <Label text="Sélectionner une question:" style="-fx-font-size: 12; -fx-text-fill: #6b7280; -fx-font-weight: 500;" />
+                        <ComboBox fx:id="questionComboBox" prefWidth="100.0" style="-fx-font-size: 12; -fx-padding: 8;" />
+                        
+                        <!-- Pie Chart avec meilleur spacing -->
+                        <PieChart fx:id="questionPieChart" prefHeight="240.0" VBox.vgrow="ALWAYS" styleClass="question-pie-chart" />
+                        
+                    </VBox>
+
+                </VBox>
+
+            </HBox>
+
         </VBox>
     </center>
 </BorderPane>

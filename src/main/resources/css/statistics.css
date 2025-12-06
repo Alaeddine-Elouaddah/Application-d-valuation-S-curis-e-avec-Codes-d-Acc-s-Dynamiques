@@ -1,0 +1,165 @@
+/* Styles pour la page statistiques */
+
+.chart-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 2);
+}
+
+/* Stats panel uses same visual style */
+.stats-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 2);
+}
+
+/* Question Panel - Enhanced Design */
+.question-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 1;
+}
+
+/* Title styling for question section */
+.question-title {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1f2937;
+    -fx-padding: 0 0 12 0;
+}
+
+/* ComboBox styling */
+.combo-box {
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-font-size: 12;
+}
+
+.combo-box:hover {
+    -fx-border-color: #d1d5db;
+}
+
+.combo-box:focused {
+    -fx-border-color: #7c3aed;
+    -fx-border-width: 2;
+}
+
+.combo-box .list-cell {
+    -fx-padding: 8;
+    -fx-font-size: 12;
+    -fx-text-fill: #374151;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 8;
+    -fx-background-color: white;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #f3f4f6;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #7c3aed;
+    -fx-text-fill: white;
+}
+
+/* PieChart styling for question */
+.question-pie-chart {
+    -fx-background-color: transparent;
+    -fx-padding: 12;
+}
+
+.question-pie-chart .pie-label {
+    -fx-font-size: 11;
+    -fx-fill: #1f2937;
+}
+
+/* Legend styling */
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 8;
+}
+
+.chart-legend-item {
+    -fx-font-size: 11;
+    -fx-text-fill: #374151;
+}
+
+/* PieChart tweaks */
+.pie-chart {
+    -fx-background-color: transparent;
+}
+
+.pie-chart-label {
+    -fx-font-size: 12;
+    -fx-fill: white;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+}
+
+/* BarChart tweaks */
+.bar-chart {
+    -fx-background-color: transparent;
+}
+
+.bar-chart .axis {
+    -fx-font-size: 11;
+}
+
+.bar-chart .axis-label {
+    -fx-font-size: 12;
+    -fx-text-fill: #374151;
+}
+
+/* Labels */
+.label {
+    -fx-text-fill: #0f172a;
+}
+
+/* Tooltip styling */
+.tooltip {
+    -fx-font-size: 12;
+    -fx-background-color: #1f2937;
+    -fx-text-fill: white;
+    -fx-padding: 8;
+    -fx-border-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);
+}
+
+/* Stats cards styling */
+.stat-card {
+    -fx-background-radius: 16;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+.stat-card-value {
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.stat-card-label {
+    -fx-font-size: 13;
+    -fx-text-fill: white;
+    -fx-font-weight: 500;
+    -fx-padding: 8 0 0 0;
+}

@@ -137,8 +137,8 @@ public class CreateExamController {
 
             // Générer un code professeur à partir du code étudiant
             // Exemple : PROF-<examId>
-            String professorCode = "PROF-" + exam.getExamId();
-            exam.setProfessorCode(professorCode);
+          String professorCode = generateProfessorCode();
+          exam.setProfessorCode(professorCode);
 
             // Sauvegarder les questions
             if (!questions.isEmpty()) {
@@ -279,6 +279,18 @@ public class CreateExamController {
         statusLabel.setText(message);
         statusLabel.setStyle("-fx-text-fill: #4CAF50; -fx-font-size: 12px;");
     }
+    
+    private String generateProfessorCode() {
+    // Générer un code professeur spécial de 8 caractères (lettres et chiffres)
+    String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < 8; i++) {
+        int index = (int) (Math.random() * chars.length());
+        sb.append(chars.charAt(index));
+    }
+    return sb.toString();
+}
+
 
     private void showExamCodeDialog(Exam exam) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

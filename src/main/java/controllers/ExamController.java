@@ -288,20 +288,8 @@ public class ExamController {
                 student.getAnswers().add(answer);
             }
 
-            System.out.println("DEBUG: Sauvegarde dans la collection 'Student'...");
-            System.out.println("  - Nom: " + studentName);
-            System.out.println("  - Numéro de liste: "
-                    + (listNumber != null && !listNumber.isEmpty() ? listNumber : "Non fourni"));
-            System.out.println("  - Filière: " + filiere);
-            System.out.println("  - Note: " + String.format("%.2f", scoreOn20) + "/20");
-            System.out.println("  - Examen ID: " + exam.getId());
-            System.out.println("  - Nombre de réponses: " + student.getAnswers().size());
-
             // Sauvegarder dans MongoDB - collection "Student"
             studentRepo.save(student);
-
-            System.out.println("✓ TOUTES les données sauvegardées dans la collection 'Student'!");
-            System.out.println("  - ID généré: " + student.getId());
 
         } catch (Exception e) {
             System.err.println("❌ Erreur lors de la sauvegarde: " + e.getMessage());
