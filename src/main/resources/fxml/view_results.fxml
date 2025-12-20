@@ -67,27 +67,7 @@
                                prefWidth="360.0" />
                 </HBox>
             </HBox>
-            
-            <!-- Separateur ligne -->
-            <Region styleClass="kv-separator" style="-fx-min-height: 1.0;" />
-            
-            <!-- Zone Filtres Controles -->
-            <HBox spacing="12.0" alignment="CENTER_LEFT" styleClass="filters-section">
-                <padding><Insets top="16.0" bottom="16.0" left="28.0" right="28.0" /></padding>
-                
-                <Label text="Filtrer par examen:" style="-fx-text-fill: #334155; -fx-font-weight: 600;" />
-                <ComboBox fx:id="examFilterCombo" prefWidth="280.0" 
-                          promptText="Selectionner un examen..." 
-                          styleClass="combo-filter" />
-                
-                <Button text="Actualiser" onAction="#handleRefresh" 
-                        styleClass="btn-primary" />
-                
-                <Region HBox.hgrow="ALWAYS" />
-            </HBox>
-            
-            <!-- Separateur ligne -->
-            <Region styleClass="kv-separator" style="-fx-min-height: 1.0;" />
+
             
             <!-- TABLEAU DES RESULTATS -->
             <VBox spacing="0.0" VBox.vgrow="ALWAYS" style="-fx-padding: 20 28 20 28;">

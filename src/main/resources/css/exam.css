@@ -1,0 +1,766 @@
+/* exam.css - design moderne type maquette (pastels, cartes blanches arrondies, ombres soft) */
+
+/* Page background */
+.root {
+    -fx-background-color: #F3F6FA; /* très clair */
+    -fx-font-family: "Segoe UI", "System";
+}
+
+/* Columns cards (left/center/right) */
+.left-column, .center-column, .right-column,
+.box-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-padding: 14;
+    -fx-effect: dropshadow(gaussian, rgba(16,24,40,0.06), 14, 0, 0, 6);
+}
+
+/* Question grid (left) */
+#questionGrid {
+    -fx-padding: 12;
+}
+
+.question-tile {
+    -fx-pref-width: 48;
+    -fx-pref-height: 48;
+    -fx-alignment: center;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.04), 8, 0, 0, 3);
+}
+
+/* Not visited = light gray */
+.question-tile.not-visited {
+    -fx-background-color: #fbfdff;
+    -fx-border-color: #e6e9ee;
+    -fx-text-fill: #6b7280;
+}
+
+/* Visited (same as not visited but optionally with subtle border) */
+.question-tile.visited {
+    -fx-background-color: #fbfdff;
+    -fx-border-color: #dfe7f3;
+    -fx-text-fill: #6b7280;
+}
+
+/* Answered = pastel green */
+.question-tile.answered {
+    -fx-background-color: #ecfdf5;
+    -fx-border-color: #bbf7d0;
+    -fx-text-fill: #166534;
+}
+
+/* Marked = pastel violet */
+.question-tile.marked {
+    -fx-background-color: #f5f3ff;
+    -fx-border-color: #ddd6fe;
+    -fx-text-fill: #5b21b6;
+}
+
+/* Section header and indicators */
+.section-header {
+    -fx-alignment: CENTER_LEFT;
+}
+.section-indicator {
+    -fx-pref-width:18;
+    -fx-pref-height:18;
+    -fx-background-radius:9;
+    -fx-border-radius:9;
+    -fx-alignment: center;
+    -fx-font-size:11px;
+    -fx-font-weight:700;
+    -fx-text-fill: white;
+}
+.section-indicator.ind-unvisited {
+    -fx-background-color: #9CA3AF; /* gray */
+}
+.section-indicator.ind-answered {
+    -fx-background-color: #16a34a; /* green */
+}
+.section-indicator.ind-marked {
+    -fx-background-color: #6d28d9; /* purple */
+}
+
+/* Selected tile (current question) */
+.question-tile.selected {
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.12), 8, 0, 0, 2);
+    -fx-border-width: 2;
+}
+
+/* Unanswered / Not answered (explicit) */
+.question-tile.unanswered {
+    -fx-background-color: #fff1f2; /* very light red */
+    -fx-border-color: #fecaca;
+    -fx-text-fill: #7f1d1d;
+}
+
+/* Final primary submit button */
+.btn-final {
+    -fx-background-color: #1e3a8a; /* deep blue */
+    -fx-text-fill: white;
+    -fx-background-radius: 14;
+    -fx-padding: 10 18;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.12), 8, 0, 0, 4);
+}
+
+/* Question card center */
+.question-card {
+    -fx-background-color: white;
+    -fx-padding: 28;
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+}
+
+/* Question header */
+.question-number {
+    -fx-font-size: 14px;
+    -fx-text-fill: #9CA3AF;
+    -fx-font-weight: 700;
+}
+
+/* Question text */
+.question-text {
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #111827;
+}
+
+/* Options (these style RadioButton and also Button if you switch) */
+.option-button {
+    -fx-background-color: white;
+    -fx-border-color: #e6e9ee;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 14 16;
+    -fx-font-size: 15px;
+    -fx-text-fill: #111827;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.03), 8, 0, 0, 4);
+}
+
+/* Hover */
+.option-button:hover {
+    -fx-border-color: #cbd5e1;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.05), 12, 0, 0, 6);
+}
+
+/* Selected option */
+.option-button:selected,
+.option-button:selected .radio,
+.option-button.option-selected {
+.option-button:selected,
+.option-button.option-selected {
+    -fx-background-color: #eef2f6; /* light gray active */
+    -fx-text-fill: #0f172a;
+    -fx-border-color: #cbd5e1;
+    -fx-font-weight: 700;
+}
+
+/* Hover + border for individual answer containers */
+.option-button {
+    -fx-background-color: white;
+    -fx-border-color: #e6e9ee;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 14 16;
+    -fx-font-size: 15px;
+    -fx-text-fill: #111827;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.03), 8, 0, 0, 4);
+}
+.option-button:hover {
+    -fx-background-color: #fafafa;
+    -fx-border-color: #d1d5db;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.06), 10, 0, 0, 6);
+}
+
+/* Row structure inside option: letter + text */
+.option-letter {
+    -fx-font-weight: 700;
+    -fx-text-fill: #111827;
+    -fx-font-size: 14px;
+    -fx-padding: 0 12 0 6;
+}
+.option-text {
+    -fx-font-size: 15px;
+    -fx-text-fill: #111827;
+}
+
+/* Hover effect for full option button */
+.option-button:hover {
+    -fx-background-color: #fafafa;
+    -fx-border-color: #e2e8f0;
+}
+
+/* Selected visual: light blue background and blue border */
+.option-button:selected {
+    -fx-background-color: #eef2ff;
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.08), 8, 0, 0, 4);
+}
+
+/* Action buttons */
+.btn-primary {
+    -fx-background-color: #1e3a8a; /* deep blue */
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: 700;
+    -fx-padding: 10 18;
+}
+
+.btn-secondary {
+    -fx-background-color: #eef2ff;
+    -fx-text-fill: #1e3a8a;
+    -fx-background-radius: 10;
+    -fx-padding: 10 16;
+    -fx-font-weight: 700;
+}
+
+/* Outline small */
+.btn-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #e6e9ee;
+    -fx-border-radius: 10;
+    -fx-padding: 8 12;
+}
+
+/* Right panel: timer box */
+.timer-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-alignment: center;
+}
+
+.timer-large {
+    -fx-font-size: 30px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-letter-spacing: 2px;
+}
+
+/* Overview box rows */
+.overview-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+.overview-value {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0f172a;
+}
+
+/* Footer control area (bookmark / clear / save) */
+.footer-controls {
+    -fx-padding: 14 0 0 0;
+    -fx-alignment: center_left;
+}
+
+/* Make ScrollPane background transparent for left grid */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+/* --- Right panel / Timer / Overview styles --- */
+
+/* Timer card (white rounded card centered) */
+.timer-card {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 18;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.05, 0, 2);
+}
+
+/* Big timer digits (spaced) */
+.timer-large {
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-letter-spacing: 2px;
+}
+
+/* small labels under timer */
+.timer-sub {
+    -fx-font-size: 12px;
+    -fx-text-fill: #9CA3AF;
+    -fx-font-weight: 600;
+    -fx-opacity: 0.95;
+}
+
+/* Wide outline buttons used for About / Read instructions */
+.btn-outline-wide {
+    -fx-background-color: white;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 10 14;
+    -fx-text-fill: #374151;
+    -fx-font-weight: 600;
+    -fx-pref-width: 100%;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.03), 6, 0, 0, 2);
+}
+
+/* Small icon in btn: make graphic align nicely */
+.btn-outline-wide .label {
+    -fx-padding: 0 6 0 0;
+}
+
+/* Overview card */
+.card-overview {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0.05, 0, 2);
+}
+
+/* Overview title */
+.overview-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #111827;
+    -fx-padding: 0 0 6 0;
+}
+
+/* labels & values alignment inside overview */
+.overview-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #4B5563;
+    -fx-alignment: CENTER_LEFT;
+}
+.overview-value {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0f172a;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* GridPane: make second column right-aligned */
+.grid-pane .label {
+    /* nothing, but keep for future overrides */
+}
+/* Timer digits + separators */
+.timer-digit {
+    -fx-font-family: "Segoe UI", "Segoe UI Semibold", "Arial";
+    -fx-font-size: 34px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-pref-width: 56;   /* contrôle largeur bloc de chaque paire */
+    -fx-alignment: center;
+    -fx-padding: 0 6 0 6;
+}
+
+.timer-sep {
+    -fx-font-size: 34px;
+    -fx-text-fill: #0f172a;
+    -fx-padding: 0 2 0 2;
+    -fx-alignment: center;
+}
+
+/* Assurer que btn-outline-wide occupe 100% du parent */
+.btn-outline-wide {
+    -fx-pref-width: 100%;
+    -fx-max-width: 100%;
+    -fx-min-width: 0;
+    -fx-alignment: center-left;
+}
+
+/* Petite mise au point : icône + texte dans les boutons */
+.btn-outline-wide .graphic {
+    -fx-padding: 0 10 0 8;
+}
+
+.timer-card {
+    -fx-padding: 16;
+    -fx-background-radius: 12;
+    -fx-background-color: white;
+}
+
+/* Espace entre timer block et buttons */
+.timer-card > .vbox {
+    -fx-spacing: 10;
+}
+/* Timer card visuals */
+.timer-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 14 14 12 14;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.06), 12, 0.05, 0, 4);
+}
+
+/* Icon buttons: place graphic left of text, small gap */
+
+/* Top card (exam + student) - compact widths and stronger left shift for student column */
+.top-card {
+    -fx-background-color: transparent;
+    -fx-padding: 8 6;
+    -fx-spacing: 10;
+    -fx-max-width: 920px;
+    -fx-min-width: 0;
+}
+
+.card-left {
+    -fx-pref-width: 64%;
+    -fx-max-width: 640px;
+    -fx-min-width: 240px;
+}
+
+.card-right {
+    -fx-pref-width: 30%;
+    -fx-max-width: 300px;
+    -fx-min-width: 160px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 0 0 6;
+    -fx-translate-x: -14px; /* nudge the whole student column left */
+}
+
+.card-right HBox {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 8;
+    -fx-padding: 0 0 0 4;
+}
+
+.card-subtitle.right {
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 8 0 0; /* space between title and items column */
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #334155;
+}
+
+/* Ensure the student title aligns visually with inline student items */
+.card-right .card-subtitle {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #334155;
+    -fx-padding: 0 0 6 0; /* small bottom gap so items sit below the title */
+    -fx-alignment: CENTER_LEFT;
+}
+
+.info-icon {
+    -fx-scale-x: 1.06;
+    -fx-scale-y: 1.06;
+    -fx-translate-y: 1px;
+    -fx-stroke-width: 1.4;
+}
+.btn-icon {
+    -fx-graphic-text-gap: 10px;
+    -fx-alignment: center-left;
+}
+
+/* Clear response button (eraser) */
+.btn-clear {
+    -fx-background-color: white;
+    -fx-border-color: #e6e9ee;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 10 16;
+    -fx-text-fill: #374151;
+    -fx-font-weight: 600;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.04), 8, 0, 0, 4);
+    -fx-cursor: hand;
+}
+.btn-clear:hover {
+    -fx-background-color: #fbfdff;
+    -fx-border-color: #e6e9ee;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.08), 12, 0, 0, 6);
+}
+
+.btn-clear .label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #374151;
+}
+
+.btn-clear > .graphic {
+    -fx-padding: 0 8 0 0;
+}
+
+/* Mark to review button (flag) */
+.btn-mark-review {
+    -fx-background-color: linear-gradient(to bottom, #dbeafe, #bfdbfe); /* light blue */
+    -fx-border-color: transparent;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-padding: 10 18;
+    -fx-text-fill: #0f172a; /* dark text */
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.12), 10, 0, 0, 6);
+    -fx-cursor: hand;
+}
+.btn-mark-review:hover {
+    -fx-background-color: linear-gradient(to bottom, #c7ddff, #a5c8ff);
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.16), 12, 0, 0, 8);
+}
+
+/* Active marked state for mark-review button */
+.btn-mark-review.marked-active {
+    -fx-background-color: #3b82f6; /* solid blue when actively marked */
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.18), 12, 0, 0, 8);
+}
+
+.btn-mark-review .label {
+    -fx-font-size: 14px;
+}
+
+.btn-mark-review > .graphic {
+    -fx-padding: 0 8 0 0;
+}
+
+/* small circular badge for the flag icon look */
+.btn-mark-review > .graphic .label {
+    -fx-background-color: #fef3c7; /* pale amber */
+    -fx-background-radius: 10;
+    -fx-padding: 4 6;
+    -fx-font-size: 14px;
+}
+
+/* Large timer digits: boxed, bold and spaced */
+.timer-digit {
+    -fx-font-family: "Segoe UI Semibold", "Segoe UI", Arial;
+    -fx-font-size: 44px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-pref-width: 84px;       /* largeur de chaque bloc */
+    -fx-alignment: center;
+    -fx-padding: 8 6 8 6;
+    -fx-background-color: #ffffff; /* blanc léger */
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(15,23,42,0.06);
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.03), 8, 0.03, 0, 3);
+}
+
+/* Separator (colon) style - slightly lighter and narrower */
+.timer-sep {
+    -fx-font-size: 38px;
+    -fx-text-fill: rgba(15,23,42,0.9);
+    -fx-padding: 0 6 0 6;
+    -fx-alignment: center;
+}
+
+/* Small labels under digits */
+.timer-sub {
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #9CA3AF;
+    -fx-opacity: 0.95;
+}
+
+/* Fine-tune spacing so Hrs/Min/Sec align under each block */
+.timer-card > .hbox {
+    -fx-alignment: center;
+}
+
+/* Custom scrollbar for the question list (left panel) */
+.question-scroll .viewport {
+    -fx-background-color: transparent;
+}
+.question-scroll .scroll-bar:vertical {
+    -fx-pref-width: 10; /* thin bar like screenshot */
+    -fx-background-color: transparent;
+    -fx-padding: 6 4 6 4;
+}
+.question-scroll .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+.question-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(15,23,42,0.12); /* light gray thumb */
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-pref-width: 8;
+}
+.question-scroll .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(15,23,42,0.22);
+}
+.question-scroll .scroll-bar .increment-button,
+.question-scroll .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+}
+
+/* Ensure the ScrollPane content keeps spacing when small */
+.question-scroll {
+    -fx-background-color: transparent;
+}
+
+/* Question text container style (if using class) */
+.question-text-container {
+    -fx-background-color: #f8fafc;
+    -fx-padding: 16;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+/* Make question card centered and clean */
+.question-card-centered {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-padding: 28;
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 4);
+}
+
+
+/* ==========================
+   Top header: Exam & Student
+   Styles improve the visual hierarchy, spacing and badge look
+   ========================== */
+
+/* Exam title larger, bold and with better contrast */
+#examTitleLabel {
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+    -fx-padding: 0 0 4 0;
+    -fx-wrap-text: true;
+}
+
+/* Short description under title: muted color, slightly smaller */
+#examDescriptionLabel {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+    -fx-padding: 0 0 2 0;
+    -fx-wrap-text: true;
+}
+
+/* Duration: subtle, uses an icon in FXML already; keep it compact */
+#examDurationLabel {
+    -fx-font-size: 13px;
+    -fx-text-fill: #4B5563;
+    -fx-font-weight: 600;
+}
+
+/* Exam code badge: rounded pill to make it stand out */
+#examCodeLabel {
+    -fx-font-size: 12px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #1D4ED8;
+    -fx-background-color: linear-gradient(to bottom, #eef2ff, #e0e7ff);
+    -fx-padding: 6 10 6 10;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.06), 8, 0, 0, 2);
+}
+
+/* Student block: name emphasized, metadata muted and right-aligned */
+#studentNameLabel {
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+#studentNumberLabel, #studentFiliereLabel {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+/* Micro card feel for the top row (center area) when available
+   If the FXML wraps the top labels in a container with a styleClass,
+   this will apply; otherwise the id-based rules above are sufficient. */
+.exam-top-right-card {
+    -fx-background-color: transparent;
+    -fx-padding: 6 8 6 8;
+}
+
+/* Slight responsive tweak: ensure long titles don't overflow */
+.center .label, .center .vbox .label {
+    -fx-wrap-text: true;
+}
+
+/* -----------------------------
+   Modern horizontal exam card
+   Styles for `.top-card`, left/right columns, icons and separator
+   ----------------------------- */
+
+.top-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+    -fx-padding: 12px 16px;
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.06), 14, 0.03, 0, 6);
+    -fx-alignment: center-left;
+    -fx-pref-width: 100%;
+}
+.top-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(2,6,23,0.12), 24, 0.03, 0, 12);
+    -fx-translate-y: -2;
+}
+
+/* Let sections size to their content; avoid forcing large gaps
+   Removed hard pref-widths so left/right adapt naturally. */
+.top-card .card-left {
+    -fx-max-width: 800px; /* prevent extreme stretching */
+}
+.top-card .card-right {
+    -fx-min-width: 160px; /* ensure enough room for student info */
+    -fx-alignment: CENTER_RIGHT;
+}
+
+/* Subtitles and typography */
+.top-card .card-subtitle {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1e3a8a; /* soft dark blue */
+}
+.top-card .card-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f172a;
+}
+.top-card .card-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #4B5563; /* muted gray */
+}
+.top-card .card-meta, .top-card .student-meta {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6b7280;
+    -fx-font-weight: 600;
+}
+.top-card .student-name {
+    -fx-font-size: 15px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #1e3a8a;
+}
+
+/* Small modern outline icon style for SVGPath icons */
+.top-card .info-icon {
+    -fx-fill: transparent;            /* no fill for outline look */
+    -fx-stroke: #6b7280;             /* muted gray stroke */
+    -fx-stroke-width: 1.6;
+    -fx-stroke-linecap: round;
+    -fx-stroke-linejoin: round;
+    -fx-opacity: 0.95;
+    -fx-scale-x: 0.9;                /* visual size tuning */
+    -fx-scale-y: 0.9;
+}
+
+/* Provide a small spacing box so SVG icons align vertically with text */
+.top-card .info-icon {
+    -fx-translate-y: 1;
+}
+
+/* Subtle vertical separator */
+.top-card .inline-sep {
+    -fx-pref-height: 64;
+    -fx-pref-width: 1;
+    -fx-opacity: 0.65;
+    -fx-background-color: rgba(15,23,42,0.06); /* thin visible line */
+    -fx-padding: 0 8 0 8;
+}
+
+/* Responsive behaviour: let HBox wrap naturally via parent constraints.
+   If you need strict mobile handling, consider adjusting pref widths or
+   using a FlowPane wrapper and controller-based class toggling. */
+}

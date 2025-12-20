@@ -76,28 +76,31 @@ public class ViewResultsController {
     private int pageSize = 10;
     private int totalPages = 1;
     private Exam examFilter =null;
-
     @FXML
     public void initialize() {
         setupTableColumns();
-        loadExams();
-        loadAllResults();
-        setupFilterListener();
 
-        // Initialize rows per page Spinner
+        // Charger les examens et installer le listener uniquement si le Combo existe (après suppression FXML il peut être null)
+        if (examFilterCombo != null) {
+            loadExams();
+            setupFilterListener();
+        }
+
+        // Charger les résultats (charge en tenant compte de examFilter si défini)
+        loadAllResults();
+
+        // Initialisation du spinner et des handlers (inchangés)
         SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 500, 10, 5);
         rowsPerPageSpinner.setValueFactory(valueFactory);
         rowsPerPageSpinner.setEditable(true);
 
-        // Listener pour appliquer le changement
         rowsPerPageSpinner.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && newVal > 0) {
                 updateTableWithNewPageSize(newVal);
             }
         });
 
-        // Prev / Next handlers
         prevButton.setOnAction(e -> {
             if (currentPage > 1) {
                 currentPage--;
@@ -112,7 +115,6 @@ public class ViewResultsController {
             }
         });
 
-        // Search field (simple client-side filter)
         if (searchField != null) {
             searchField.textProperty().addListener((obs, oldVal, newVal) -> {
                 applyFilters();
@@ -151,98 +153,115 @@ public class ViewResultsController {
         });
     }
 
-    private void loadExams() {
-        try {
-            List<Exam> exams = examRepo.findAll();
-            examFilterCombo.getItems().clear();
-            examFilterCombo.getItems().add(null); // Option "Tous les examens"
-            examFilterCombo.getItems().addAll(exams);
-
-            // Affichage personnalisé dans le ComboBox
-            examFilterCombo.setButtonCell(new ListCell<Exam>() {
-                @Override
-                protected void updateItem(Exam exam, boolean empty) {
-                    super.updateItem(exam, empty);
-                    if (empty || exam == null) {
-                        setText("Tous les examens");
-                    } else {
-                        setText(exam.getTitle());
-                    }
-                }
-            });
-
-            examFilterCombo.setCellFactory(param -> new ListCell<Exam>() {
-                @Override
-                protected void updateItem(Exam exam, boolean empty) {
-                    super.updateItem(exam, empty);
-                    if (empty || exam == null) {
-                        setText("Tous les examens");
-                    } else {
-                        setText(exam.getTitle() + " (" + exam.getExamId() + ")");
-                    }
-                }
-            });
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement des examens: " + e.getMessage());
-            e.printStackTrace();
-        }
+private void loadExams() {
+        if (examFilterCombo == null) {
+        // ComboBox supprimé du FXML — rien à faire côté UI
+        return;
     }
+    try {
+       List<Exam> exams = examRepo.findAll();
+        examFilterCombo.getItems().clear();
+        examFilterCombo.getItems().addAll(exams);
 
-    private void loadAllResults() {
-        try {
-            allResults.clear();
-            List<Student> students = studentRepo.findAll();
-
-            // Cache pour les titres d'examens
-            Map<ObjectId, String> examTitles = new HashMap<>();
-
-            for (Student student : students) {
-                // Si un exam filter est défini, ignorer les étudiants d'autres examens
-                if (examFilter != null && !student.getExamId().equals(examFilter.getId())) {
-                    continue;
+        // Affichage personnalisé dans le ComboBox
+        examFilterCombo.setButtonCell(new ListCell<Exam>() {
+            @Override
+            protected void updateItem(Exam exam, boolean empty) {
+                super.updateItem(exam, empty);
+                if (empty || exam == null) {
+                    setText("");
+                } else {
+                    setText(exam.getTitle());
                 }
+            }
+        });
 
-                // Récupérer le titre de l'examen (avec cache)
-                String examTitle = examTitles.get(student.getExamId());
-                if (examTitle == null) {
-                    Exam exam = examRepo.findById(student.getExamId());
-                    examTitle = exam != null ? exam.getTitle() : "Examen inconnu";
-                    examTitles.put(student.getExamId(), examTitle);
+        examFilterCombo.setCellFactory(param -> new ListCell<Exam>() {
+            @Override
+            protected void updateItem(Exam exam, boolean empty) {
+                super.updateItem(exam, empty);
+                if (empty || exam == null) {
+                    setText("");
+                } else {
+                    setText(exam.getTitle() + " (" + exam.getExamId() + ")");
                 }
+            }
+        });
 
-                StudentResult result = new StudentResult(
-                        student.getStudentName(),
-                        student.getStudentListNumber(),
-                        student.getStudentFiliere(),
-                        student.getScore(),
-                        examTitle,
-                        student.getEndTime());
+        // Si un examFilter est déjà défini (par exemple via showExamResults), sélectionner cet exam dans la combo
+        if (this.examFilter != null) {
+            examFilterCombo.setValue(this.examFilter);
+            examFilterCombo.setDisable(true); // Empêcher de changer si c'est un professeur
+        }
 
-                allResults.add(result);
+    } catch (Exception e) {
+        System.err.println("Erreur lors du chargement des examens: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+
+private void loadAllResults() {
+    try {
+        allResults.clear();
+
+        List<Student> students;
+        // Si un examen est filtré (professeur connecté), charger uniquement ses étudiants
+        if (examFilter != null && examFilter.getId() != null) {
+            students = studentRepo.findByExamId(examFilter.getId());
+        } else {
+            // Comportement "administrateur" ou pas de filtre : charger tous les étudiants
+            students = studentRepo.findAll();
+        }
+
+        // Cache pour les titres d'examens
+        Map<ObjectId, String> examTitles = new HashMap<>();
+
+        for (Student student : students) {
+            // Récupérer le titre de l'examen (avec cache)
+            String examTitle = examTitles.get(student.getExamId());
+            if (examTitle == null) {
+                Exam exam = examRepo.findById(student.getExamId());
+                examTitle = exam != null ? exam.getTitle() : "Examen inconnu";
+                examTitles.put(student.getExamId(), examTitle);
             }
 
-            // Initially filteredResults contains everything
-            filteredResults.setAll(allResults);
+            StudentResult result = new StudentResult(
+                    student.getStudentName(),
+                    student.getStudentListNumber(),
+                    student.getStudentFiliere(),
+                    student.getScore(),
+                    examTitle,
+                    student.getEndTime());
 
-            // Reset pagination and show first page
-            currentPage = 1;
-            pageSize = rowsPerPageSpinner.getValue() != null ? rowsPerPageSpinner.getValue() : pageSize;
-            refreshDisplayedResults();
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement des résultats: " + e.getMessage());
-            e.printStackTrace();
-            showError("Impossible de charger les résultats: " + e.getMessage());
+            allResults.add(result);
         }
+
+        // Initially filteredResults contains everything (mais since we removed 'Tous', filteredResults will reflect combo selection)
+        filteredResults.setAll(allResults);
+
+        // Reset pagination and show first page
+        currentPage = 1;
+        pageSize = rowsPerPageSpinner.getValue() != null ? rowsPerPageSpinner.getValue() : pageSize;
+        refreshDisplayedResults();
+
+    } catch (Exception e) {
+        System.err.println("Erreur lors du chargement des résultats: " + e.getMessage());
+        e.printStackTrace();
+        showError("Impossible de charger les résultats: " + e.getMessage());
     }
-    private void setupFilterListener() {
+}
+
+
+private void setupFilterListener() {
+    if (examFilterCombo != null) {
         examFilterCombo.setOnAction(event -> applyFilters());
     }
+}
 
     private void applyFilters() {
         // Filter by exam selection and searchField text
-        Exam selectedExam = examFilterCombo.getValue();
-        String query = (searchField != null && searchField.getText() != null) ? searchField.getText().trim().toLowerCase() : "";
+      Exam selectedExam = (examFilterCombo != null) ? examFilterCombo.getValue() : this.examFilter;
+    String query = (searchField != null && searchField.getText() != null) ? searchField.getText().trim().toLowerCase() : "";
 
         ObservableList<StudentResult> filtered = FXCollections.observableArrayList();
         for (StudentResult r : allResults) {
@@ -339,13 +358,15 @@ public class ViewResultsController {
         }
     }
 
-    @FXML
-    private void handleRefresh() {
-        loadAllResults();
-        loadExams();
+   @FXML
+private void handleRefresh() {
+    loadAllResults();
+    loadExams();
+    if (examFilterCombo != null) {
         examFilterCombo.setValue(null);
-        if (searchField != null) searchField.clear();
     }
+    if (searchField != null) searchField.clear();
+}
 
     @FXML
     private void openHome(MouseEvent event) {
@@ -398,6 +419,20 @@ public class ViewResultsController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/statistics.fxml"));
             Parent root = loader.load();
+
+            // --- passer l'examen sélectionné au controller des statistiques ---
+            StatisticsController statsController = loader.getController();
+            if (statsController != null) {
+                // `examFilter` est le champ du ViewResultsController qui contient l'examen actuellement sélectionné
+                if (this.examFilter != null) {
+                    statsController.loadForExam(this.examFilter);
+                } else {
+                    // Optionnel : si aucun examFilter, on peut chercher un examen par défaut
+                    // Exemple: charger le premier exam du examRepo ou ne rien faire
+                    // List<Exam> exams = examRepo.findAll();
+                    // if (!exams.isEmpty()) statsController.loadForExam(exams.get(0));
+                }
+            }
             Stage stage = (Stage) resultsTable.getScene().getWindow();
             Scene scene = stage.getScene();
 

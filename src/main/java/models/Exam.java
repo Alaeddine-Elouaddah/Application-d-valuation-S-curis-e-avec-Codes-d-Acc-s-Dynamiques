@@ -98,9 +98,30 @@ public class Exam {
         exam.setDurationMinutes(doc.getInteger("durationMinutes", 60));
         exam.setActive(doc.getBoolean("isActive", true));
 
-        List<ObjectId> questionIds = doc.getList("questionIds", ObjectId.class);
-        if (questionIds != null) {
-            exam.setQuestionIds(questionIds);
+        // Récupérer les IDs des questions avec gestion d'erreur robuste
+        try {
+            Object questionIdsObj = doc.get("questionIds");
+            if (questionIdsObj != null && questionIdsObj instanceof java.util.List) {
+                List<?> rawList = (List<?>) questionIdsObj;
+                List<ObjectId> questionIds = new ArrayList<>();
+                for (Object item : rawList) {
+                    if (item instanceof ObjectId) {
+                        questionIds.add((ObjectId) item);
+                    } else if (item instanceof String) {
+                        try {
+                            questionIds.add(new ObjectId((String) item));
+                        } catch (IllegalArgumentException e) {
+                            System.err.println("⚠️ Invalid ObjectId string: " + item);
+                        }
+                    }
+                }
+                if (!questionIds.isEmpty()) {
+                    exam.setQuestionIds(questionIds);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors de la lecture de questionIds: " + e.getMessage());
+            e.printStackTrace();
         }
 
         Date createdAtDate = doc.getDate("createdAt");

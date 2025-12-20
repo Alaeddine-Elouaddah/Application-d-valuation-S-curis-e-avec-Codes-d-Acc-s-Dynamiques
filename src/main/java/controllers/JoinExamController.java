@@ -65,6 +65,7 @@ public class JoinExamController {
         if (errorLabel != null) errorLabel.setText("");
 
         String examCode = examCodeField.getText().trim().toUpperCase();
+        System.out.println("[JoinExamController] handleJoinExam: user entered code='" + examCode + "'");
 
         if (examCode.isEmpty()) {
             showError("Veuillez entrer un code!");
@@ -112,6 +113,7 @@ public class JoinExamController {
 
         try {
             Exam exam = examRepository.findByExamId(examCode);
+            System.out.println("[JoinExamController] after findByExamId -> exam=" + (exam == null ? "null" : exam.getTitle()));
 
             if (exam == null) {
                 showError("Code d'examen invalide! Vérifiez le code et réessayez.");
@@ -141,9 +143,9 @@ public class JoinExamController {
 
         alert.setContentText(
                 "Titre: " + exam.getTitle() + "\n" +
-                "Description: " + (exam.getDescription().isEmpty() ? "Aucune" : exam.getDescription()) + "\n" +
+                "Description: " + (exam.getDescription() == null || exam.getDescription().isEmpty() ? "Aucune" : exam.getDescription()) + "\n" +
                 "Durée: " + exam.getDurationMinutes() + " minutes\n" +
-                "Nombre de questions: " + exam.getQuestionIds().size() + "\n\n" +
+                "Nombre de questions: " + (exam.getQuestionIds() != null ? exam.getQuestionIds().size() : 0) + "\n\n" +
                 studentInfo + "\n\n" +
                 "Êtes-vous prêt à commencer?"
         );
@@ -189,9 +191,11 @@ public class JoinExamController {
 
             if (countdownOverlay != null) countdownOverlay.setVisible(false);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Catch any exception (IOException or runtime exception from controller.initData)
             e.printStackTrace();
             showError("Impossible de lancer l'examen: " + e.getMessage());
+            System.err.println("[JoinExamController] startExam failed: " + e.getMessage());
             if (countdownOverlay != null) countdownOverlay.setVisible(false);
         }
     }
@@ -248,7 +252,6 @@ public class JoinExamController {
             stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
             stage.setFullScreenExitHint("");
             stage.setFullScreen(true);
-           
         }
     }
 }
