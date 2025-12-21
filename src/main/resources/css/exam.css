@@ -430,8 +430,8 @@
 }
 
 .card-subtitle.right {
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 0 8 0 0; /* space between title and items column */
+    -fx-alignment: TOP_LEFT; /* align title to the top of the student column */
+    -fx-padding: 0 0 6 0; /* bottom gap so items sit below the title */
     -fx-font-size: 13px;
     -fx-font-weight: 700;
     -fx-text-fill: #334155;
