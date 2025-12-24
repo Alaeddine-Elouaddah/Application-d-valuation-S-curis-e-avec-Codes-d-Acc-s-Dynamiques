@@ -3,7 +3,7 @@ package database;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import models.Question;
+import com.project.models.Question;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 

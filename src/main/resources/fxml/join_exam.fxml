@@ -18,7 +18,7 @@
           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
         <!-- Card blanche (formulaire) -->
-        <VBox alignment="TOP_CENTER" spacing="20.0" 
+        <VBox alignment="TOP_CENTER" spacing="15.0" 
               prefWidth="480.0" styleClass="form-card">
             <padding>
                 <Insets top="48.0" bottom="48.0" left="40.0" right="40.0"/>
@@ -29,21 +29,26 @@
                 <font><Font size="28.0"/></font>
             </Label>
 
-            <!-- Sous-titre -->
-            <Label text="Entrez le code d'examen fourni par votre professeur"
-                   textAlignment="CENTER" wrapText="true"
-                   styleClass="form-subtitle">
-                <font><Font size="14.0"/></font>
-            </Label>
+                 <!-- Sous-titre (split en deux labels pour garantir l'affichage sur deux lignes) -->
+                 <Label text="Entrez le code d’examen fourni par votre professeur," 
+                        textAlignment="CENTER" wrapText="true" 
+                        styleClass="form-subtitle">
+                    <font><Font size="14.0"/></font>
+                 </Label>
+                 <Label text="ou le code professeur pour consulter les notes et les statistiques." 
+                        textAlignment="CENTER" wrapText="true" 
+                        styleClass="form-subtitle">
+                    <font><Font size="14.0"/></font>
+                 </Label>
 
             <!-- Séparateur visuel -->
-            <Region prefHeight="12.0"/>
+            <Region prefHeight="10.0"/>
 
             <!-- Champs de saisie -->
             <VBox spacing="14.0">
                 <!-- Code d'Examen -->
                 <TextField fx:id="examCodeField"
-                           promptText="Code d'Examen *"
+                           promptText="Code d’accès : examen ou professeur"
                            styleClass="input-field">
                     <font><Font size="14.0"/></font>
                 </TextField>

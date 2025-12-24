@@ -3,96 +3,187 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.ExamController"
-            prefHeight="600.0" prefWidth="800.0"
-            style="-fx-background-color: #f5f5f5;">
+            prefHeight="1080.0" prefWidth="1920.0"
+            stylesheets="@../css/exam.css"
+            style="-fx-font-family: 'Segoe UI', Arial;">
 
-    <!-- Top Bar: Timer and Info -->
-    <top>
-        <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #2196F3; -fx-padding: 15;">
-            <Label fx:id="examTitleLabel" text="Titre de l'Examen" textFill="WHITE">
-                <font>
-                    <Font name="System Bold" size="20.0" />
-                </font>
-            </Label>
-            <Region HBox.hgrow="ALWAYS" />
-            <VBox alignment="CENTER_RIGHT">
-                <Label fx:id="studentInfoLabel" text="Étudiant: Nom (Filière)" textFill="WHITE">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </Label>
-                <Label fx:id="timerLabel" text="Temps restant: 00:00:00" textFill="WHITE">
-                    <font>
-                        <Font name="System Bold" size="18.0" />
-                    </font>
-                </Label>
-            </VBox>
-        </HBox>
-    </top>
-
-    <!-- Center: Question Display -->
+    <!-- ======= MAIN 3-COLUMNS LAYOUT ======= -->
     <center>
-        <VBox alignment="TOP_CENTER" spacing="30.0">
-            <padding>
-                <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
-            </padding>
+        <HBox spacing="20.0" alignment="TOP_LEFT" style="-fx-padding: 20;">
 
-            <!-- Question Number and Text -->
-            <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                <Label fx:id="questionNumberLabel" text="Question 1/10" textFill="#666666">
-                    <font>
-                        <Font name="System Bold" size="16.0" />
-                    </font>
-                </Label>
-                <Label fx:id="questionTextLabel" text="Quelle est la capitale de la France ?" wrapText="true">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Label>
+            <!-- LEFT: Question Grid (TilePane inside ScrollPane) -->
+            <VBox spacing="12.0" prefWidth="320.0" style="-fx-padding: 8;">
+                <Label text="Questions" style="-fx-font-size:13; -fx-font-weight:700; -fx-text-fill:#374151; -fx-padding: 6 0 0 6;"/>
+                <!-- Question grid container wrapped in ScrollPane (vertical scroll when needed) -->
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background-color: transparent; -fx-padding: 8;" styleClass="question-scroll" VBox.vgrow="ALWAYS" prefHeight="0.0">
+                    <content>
+                        <VBox fx:id="questionGrid" spacing="8" style="-fx-padding: 8;" VBox.vgrow="ALWAYS" />
+                    </content>
+                </ScrollPane>
+                
             </VBox>
 
-            <!-- Options -->
-            <VBox fx:id="optionsContainer" spacing="15.0" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                <!-- Options will be added dynamically here -->
+            <!-- CENTER: Question & Student Info -->
+            <VBox spacing="18.0" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" style="-fx-padding: 0 8 0 8; -fx-min-width: 0;">
+                <!-- Student / Exam info row (top) - modern card -->
+                <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                    <HBox styleClass="top-card" HBox.hgrow="ALWAYS" spacing="8">
+
+                        <!-- Left: Exam info -->
+                        <VBox styleClass="card-left" spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="Examen" styleClass="card-subtitle" />
+                            <Label fx:id="examTitleLabel" text="TpTp" wrapText="true" styleClass="card-title" />
+                            <Label fx:id="examDescriptionLabel" text="Description : tptp" wrapText="true" styleClass="card-text" />
+
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <SVGPath content="M12,2 C17.52,2 22,6.48 22,12 C22,17.52 17.52,22 12,22 C6.48,22 2,17.52 2,12 C2,6.48 6.48,2 12,2 Z M12 6v6l4 2" styleClass="info-icon" />
+                                <Label fx:id="examDurationLabel" text="Durée : 5 minutes" styleClass="card-meta" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Right: Student info (no visual divider) -->
+                        <VBox styleClass="card-right" spacing="6" alignment="CENTER_LEFT">
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <Label text="Étudiant" styleClass="card-subtitle right" />
+                                <VBox spacing="6">
+                                    <HBox spacing="8" alignment="CENTER_LEFT">
+                                        <SVGPath content="M12,12 C15.31,12 18,9.31 18,6 C18,2.69 15.31,0 12,0 C8.69,0 6,2.69 6,6 C6,9.31 8.69,12 12,12 Z M4,22 C4,17.58 7.58,14 12,14 C16.42,14 20,17.58 20,22" styleClass="info-icon" />
+                                        <Label fx:id="studentNameLabel" text="jsn" styleClass="student-name" />
+                                    </HBox>
+                                    <HBox spacing="8" alignment="CENTER_LEFT">
+                                        <SVGPath content="M3,4 H21 V20 H3 Z M7,9 H17 M7,13 H13" styleClass="info-icon" />
+                                        <Label fx:id="studentNumberLabel" text="8512" styleClass="student-meta" />
+                                    </HBox>
+                                    <HBox spacing="8" alignment="CENTER_LEFT">
+                                        <SVGPath content="M3,3 L17,3 L21,7 L9,19 L3,13 Z M7,7 A1.5,1.5 0 1,0 7,10 A1.5,1.5 0 1,0 7,7" styleClass="info-icon" />
+                                        <Label fx:id="studentFiliereLabel" text="yjn" styleClass="student-meta" />
+                                    </HBox>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+
+                    </HBox>
+                </HBox>
+
+                <!-- Progress Bar -->
+                <ProgressBar fx:id="progressBar" prefHeight="8" progress="0.0" style="-fx-background-radius: 6; -fx-padding: 2;" />
+
+                <!-- Question Card -->
+                <VBox spacing="12.0" style="-fx-background-color: white; -fx-padding: 28; -fx-background-radius: 16; -fx-border-color: rgba(0,0,0,0.06); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4);" VBox.vgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT">
+                        <Label fx:id="questionNumberLabel" text="Q: 1" style="-fx-font-size:14px; -fx-text-fill:#111827; -fx-font-weight:700;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="examCodeLabel" text="Code: N/A" style="-fx-font-size:12px; -fx-text-fill:#1D4ED8; -fx-font-weight:700; -fx-padding:0 8 0 0;" />
+                        <Hyperlink text="Report" style="-fx-text-fill:#6b7280; -fx-underline:false; -fx-font-size:12px;" />
+                    </HBox>
+
+                    <!-- Question text sub-container (light gray) -->
+                    <VBox spacing="8.0" style="-fx-background-color: #f8fafc; -fx-padding:16; -fx-background-radius:10; -fx-border-radius:10;">
+                        <Label fx:id="questionTextLabel" text="Question text here" wrapText="true" style="-fx-font-size:18px; -fx-text-fill:#111827; -fx-font-weight:600; -fx-line-spacing:6;" />
+                    </VBox>
+
+                    <!-- Question media container -->
+                    <VBox fx:id="questionMediaContainer" spacing="8.0" style="-fx-padding:8;" />
+
+                    <Separator />
+
+                    <!-- Answers: each option will be rendered by controller inside this VBox -->
+                    <VBox fx:id="optionsContainer" spacing="12.0" />
+
+                    <!-- Bottom action row: bookmark left, controls right -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button fx:id="btnMarkReview" text="Mark to review" styleClass="btn-mark-review btn-icon">
+                            <graphic>
+                                <Label text="▶" style="-fx-font-size:16px; -fx-padding:0 8 0 0;" />
+                            </graphic>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnClear" text="Clear Response" styleClass="btn-clear btn-icon">
+                            <graphic>
+                                <Label text="✎" style="-fx-font-size:15px; -fx-padding:0 8 0 0;" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="btnSaveNext" text="Save and Next" styleClass="btn-final" />
+                    </HBox>
+                </VBox>
+
             </VBox>
-        </VBox>
-    </center>
-
-    <!-- Bottom: Navigation -->
-    <bottom>
-        <HBox alignment="CENTER" spacing="50.0" style="-fx-padding: 20; -fx-background-color: #e0e0e0;">
-            <Button fx:id="previousButton" mnemonicParsing="false" onAction="#handlePrevious" text="Précédent" visible="false">
-                <font>
-                    <Font size="16.0" />
-                </font>
-                <padding>
-                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                </padding>
-            </Button>
-            
-            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#handleSubmit" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Terminer l'Examen" visible="false">
-                <font>
-                    <Font name="System Bold" size="16.0" />
-                </font>
-                <padding>
-                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                </padding>
-            </Button>
-
-            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#handleNext" style="-fx-background-color: #2196F3; -fx-text-fill: white;" text="Suivant">
-                <font>
-                    <Font name="System Bold" size="16.0" />
-                </font>
-                <padding>
-                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-                </padding>
-            </Button>
+<!-- RIGHT: Timer and Overview (design fidèle) -->
+<VBox spacing="12.0" prefWidth="320.0" style="-fx-padding: 8;">
+    <!-- Timer card -->
+    <VBox spacing="12.0" styleClass="timer-card" alignment="CENTER">
+        <!-- Large single-line timer -->
+        <HBox spacing="8.0" alignment="CENTER">
+            <Label fx:id="timerLabel" text="00 : 00 : 00" styleClass="timer-large" />
         </HBox>
-    </bottom>
 
+        <!-- Hrs / Min / Sec labels under the timer -->
+        <HBox spacing="18.0" alignment="CENTER" >
+            <VBox alignment="CENTER" spacing="4.0">
+                <Label text="Hrs" styleClass="timer-sub" />
+            </VBox>
+            <VBox alignment="CENTER" spacing="4.0">
+                <Label text="Min" styleClass="timer-sub" />
+            </VBox>
+            <VBox alignment="CENTER" spacing="4.0">
+                <Label text="Sec" styleClass="timer-sub" />
+            </VBox>
+        </HBox>
+
+        <Separator />
+
+        <!-- Buttons: About Test / Read Instructions (pleine largeur) -->
+        <VBox spacing="10.0" alignment="CENTER" style="-fx-padding: 6 0 6 0;">
+            <Button fx:id="btnAbout" text="About Test" styleClass="btn-primary btn-outline-wide" maxWidth="Infinity" />
+            <Button fx:id="btnInstructions" text="Read Instructions" styleClass="btn-secondary btn-outline-wide" maxWidth="Infinity">
+                <graphic>
+                    <Label text="📖" style="-fx-font-size:16px; -fx-padding: 0 8 0 0;" />
+                </graphic>
+            </Button>
+        </VBox>
+    </VBox>
+
+    <!-- Overview card -->
+    <VBox spacing="12.0" styleClass="card-overview" alignment="TOP_LEFT" >
+        <Label text="Overview" styleClass="overview-title"/>
+        <Separator />
+
+        <GridPane hgap="8" vgap="10" style="-fx-padding: 6 0 0 0;">
+            <Label text="Total Questions" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="totalLabel" text="0" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="overview-value"/>
+
+            <Label text="Visited" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="visitedLabel" text="0" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="overview-value"/>
+
+            <Label text="Not Visited" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="notVisitedLabel" text="0" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="overview-value"/>
+
+            <Label text="Answered" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="answeredLabel" text="0" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="overview-value"/>
+
+            <Label text="Not Answered" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="notAnsweredLabel" text="0" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="overview-value"/>
+
+            <Label text="Marked to review" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="markedLabel" text="0" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="overview-value"/>
+
+            <Label text="Bookmarked" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="overview-label"/>
+            <Label fx:id="bookmarkedLabel" text="0" GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="overview-value"/>
+        </GridPane>
+    </VBox>
+
+    <!-- Bottom action buttons: Review & Submit (primary) -->
+    <HBox spacing="8" alignment="CENTER_RIGHT" style="-fx-padding:10 0 0 0;">
+        <Button fx:id="btnReviewSubmit" text="Review &amp; Submit" onAction="#handleSubmit" styleClass="btn-final" />
+    </HBox>
+
+</VBox>
+        </HBox>
+    </center>
 </BorderPane>

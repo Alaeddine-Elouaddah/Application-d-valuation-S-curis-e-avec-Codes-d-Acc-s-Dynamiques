@@ -1,4 +1,4 @@
-package models;
+package com.project.models;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;

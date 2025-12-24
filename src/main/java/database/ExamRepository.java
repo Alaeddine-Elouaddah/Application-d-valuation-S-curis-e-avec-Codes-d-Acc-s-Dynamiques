@@ -3,7 +3,7 @@ package database;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import models.Exam;
+import com.project.models.Exam;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
@@ -50,10 +50,44 @@ public class ExamRepository {
     }
 
     public Exam findByExamId(String examId) {
-        Document doc = collection.find(Filters.eq("examId", examId)).first();
+        if (examId == null || examId.isEmpty()) {
+            System.err.println("❌ findByExamId: examId is null or empty");
+            return null;
+        }
+        
+        String searchCode = examId.trim().toUpperCase();
+        System.out.println("🔍 Searching for exam with code: " + searchCode);
+        
+        // Essayer d'abord avec la casse exacte
+        Document doc = collection.find(Filters.eq("examId", searchCode)).first();
+        
+        // Si pas trouvé, chercher en minuscules
+        if (doc == null) {
+            doc = collection.find(Filters.eq("examId", searchCode.toLowerCase())).first();
+        }
+        
+        // Si toujours pas trouvé, chercher tous les exams avec regex insensible à la casse
+        if (doc == null) {
+            System.out.println("📋 Fetching all exams to find match...");
+            for (Document d : collection.find()) {
+                Object examIdObj = d.get("examId");
+                if (examIdObj != null) {
+                    String dbExamId = examIdObj.toString().trim().toUpperCase();
+                    System.out.println("   Found exam code in DB: " + dbExamId);
+                    if (dbExamId.equals(searchCode)) {
+                        doc = d;
+                        break;
+                    }
+                }
+            }
+        }
+        
         if (doc != null) {
+            System.out.println("✅ Exam found: " + doc.get("title"));
             return Exam.fromDocument(doc);
         }
+        
+        System.err.println("❌ No exam found with code: " + searchCode);
         return null;
     }
 

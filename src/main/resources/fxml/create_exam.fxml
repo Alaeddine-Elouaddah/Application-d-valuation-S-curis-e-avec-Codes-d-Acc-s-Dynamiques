@@ -18,8 +18,17 @@
         <VBox spacing="20.0" style="-fx-padding: 30;">
             
             <!-- Titre -->
-            <Label text="Créer un Nouvel Examen" 
-                   style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <Label text="Créer un Nouvel Examen" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="lastExamButton" text="🔔" onAction="#handleLastExamClick"
+                        style="-fx-font-size:20px; -fx-background-color: transparent; -fx-cursor: hand;"
+                        disable="false">
+                    <tooltip>
+                        <Tooltip text="Dernier examen créé" />
+                    </tooltip>
+                </Button>
+            </HBox>
             
             <!-- Formulaire -->
             <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 10;">

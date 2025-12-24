@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import models.Exam;
+import com.project.models.Exam;
 
 import java.io.IOException;
 
@@ -65,6 +65,7 @@ public class JoinExamController {
         if (errorLabel != null) errorLabel.setText("");
 
         String examCode = examCodeField.getText().trim().toUpperCase();
+        System.out.println("[JoinExamController] handleJoinExam: user entered code='" + examCode + "'");
 
         if (examCode.isEmpty()) {
             showError("Veuillez entrer un code!");
@@ -112,6 +113,7 @@ public class JoinExamController {
 
         try {
             Exam exam = examRepository.findByExamId(examCode);
+            System.out.println("[JoinExamController] after findByExamId -> exam=" + (exam == null ? "null" : exam.getTitle()));
 
             if (exam == null) {
                 showError("Code d'examen invalide! Vérifiez le code et réessayez.");
@@ -134,6 +136,7 @@ public class JoinExamController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Vous allez rejoindre l'examen:");
+        alert.initOwner(joinButton.getScene().getWindow());
 
         String studentInfo = "Étudiant: " + studentName;
         if (listNumber != null && !listNumber.isEmpty()) studentInfo += "\nNuméro: " + listNumber;
@@ -141,12 +144,19 @@ public class JoinExamController {
 
         alert.setContentText(
                 "Titre: " + exam.getTitle() + "\n" +
-                "Description: " + (exam.getDescription().isEmpty() ? "Aucune" : exam.getDescription()) + "\n" +
+                "Description: " + (exam.getDescription() == null || exam.getDescription().isEmpty() ? "Aucune" : exam.getDescription()) + "\n" +
                 "Durée: " + exam.getDurationMinutes() + " minutes\n" +
-                "Nombre de questions: " + exam.getQuestionIds().size() + "\n\n" +
+                "Nombre de questions: " + (exam.getQuestionIds() != null ? exam.getQuestionIds().size() : 0) + "\n\n" +
                 studentInfo + "\n\n" +
                 "Êtes-vous prêt à commencer?"
         );
+
+  Stage owner = (Stage) joinButton.getScene().getWindow();
+        alert.setOnShown(event -> {
+            Stage dialogStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            dialogStage.setX(owner.getX() + owner.getWidth() / 2 - dialogStage.getWidth() / 2);
+            dialogStage.setY(owner.getY() + owner.getHeight() / 2 - dialogStage.getHeight() / 2);
+        });
 
         alert.showAndWait().ifPresent(response -> {
             if (response == javafx.scene.control.ButtonType.OK) {
@@ -185,13 +195,18 @@ public class JoinExamController {
             controller.initData(exam, studentName, listNumber, filiere);
 
             Stage stage = (Stage) joinButton.getScene().getWindow();
+
+            // Forcer le mode plein écran obligatoire (sans toucher au comportement par défaut d'Escape)
             setSceneWithFade(stage, root, "Examen en cours - " + exam.getTitle());
+            stage.setFullScreen(true);
 
             if (countdownOverlay != null) countdownOverlay.setVisible(false);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // Catch any exception (IOException or runtime exception from controller.initData)
             e.printStackTrace();
             showError("Impossible de lancer l'examen: " + e.getMessage());
+            System.err.println("[JoinExamController] startExam failed: " + e.getMessage());
             if (countdownOverlay != null) countdownOverlay.setVisible(false);
         }
     }
@@ -203,6 +218,7 @@ public class JoinExamController {
             Parent root = loader.load();
             Stage stage = (Stage) backButton.getScene().getWindow();
             setSceneWithFade(stage, root, "Système de Gestion d'Examens QCM");
+            // No ESC-specific cleanup required — rely on JavaFX defaults
         } catch (IOException e) {
             System.err.println("Erreur lors du retour à l'accueil: " + e.getMessage());
             e.printStackTrace();
@@ -230,8 +246,7 @@ public class JoinExamController {
                 fadeIn.setToValue(1.0);
                 fadeIn.play();
 
-                        stage.setMaximized(true); // Important pour supprimer la barre Windows
-                        stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
+                stage.setMaximized(true); // Important pour supprimer la barre Windows
                         stage.setFullScreenExitHint("");
                         stage.setFullScreen(true);
                 stage.setFullScreenExitHint("");
@@ -242,13 +257,10 @@ public class JoinExamController {
         } else {
             Scene newScene = new Scene(newRoot);
                     stage.setMaximized(true);
-                    stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
                     stage.setFullScreenExitHint("");
                     stage.setFullScreen(true);
-            stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
             stage.setFullScreenExitHint("");
             stage.setFullScreen(true);
-           
         }
     }
 }

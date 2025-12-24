@@ -10,13 +10,14 @@
             prefWidth="1400.0" prefHeight="1000.0"
             stylesheets="@../css/view_results.css,@../css/statistics.css">
 
-    <top>
-        <HBox spacing="12.0" alignment="CENTER_LEFT" style="-fx-padding: 16;">
-            <Button fx:id="backButton" text="← Retour" onAction="#handleBackToResults" styleClass="back-button"/>
-            <Label text="Statistiques" style="-fx-font-size:24; -fx-font-weight:700; -fx-text-fill:white;" />
-            <Region HBox.hgrow="ALWAYS" />
-        </HBox>
-    </top>
+ <top>
+    <HBox spacing="12.0" alignment="CENTER" style="-fx-padding: 16 28 16 28;">
+        <Region HBox.hgrow="ALWAYS" />
+        <Label text="Statistiques" styleClass="page-title" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="backButton" text="← Retour" onAction="#handleBackToResults" styleClass="back-button"/>
+    </HBox>
+</top>
 
     <center>
         <VBox spacing="24.0" alignment="TOP_LEFT" VBox.vgrow="ALWAYS" style="-fx-padding: 24;">
@@ -93,20 +94,29 @@
                         </BarChart>
                     </VBox>
 
-                    <!-- Pie Chart Par Question (Bas Droite) - ENHANCED DESIGN -->
-                    <VBox spacing="14.0" alignment="TOP_LEFT" styleClass="question-panel" VBox.vgrow="ALWAYS">
+                    <!-- Pie Chart Par Question (Bas Droite) - AUGMENTÉ EN HAUTEUR -->
+                    <VBox spacing="6.0" alignment="TOP_CENTER" styleClass="question-panel" prefWidth="380.0" prefHeight="280.0" style="-fx-background-color: white;">
                         
-                        <!-- Header avec titre -->
-                        <VBox spacing="0" alignment="TOP_LEFT">
-                            <Label text="Réussite vs Échec par question" styleClass="question-title" />
-                        </VBox>
+                        <!-- Top Section: Title + TextField aligned to the right -->
+<HBox spacing="10.0" alignment="CENTER" HBox.hgrow="ALWAYS" style="-fx-padding: 0 0 4 0;">
+    <Region HBox.hgrow="ALWAYS" />
+<Label text="Réussite vs Échec par question" style="-fx-font-size:16; -fx-font-weight:700; -fx-text-fill:#1f2937;" />    <Region HBox.hgrow="ALWAYS" />
+    <TextField fx:id="questionNumberInput"
+               promptText="N° question"
+               prefWidth="120.0"
+               style="-fx-font-size: 11;
+                      -fx-padding: 8 12 8 12;
+                      -fx-background-radius: 8;
+                      -fx-background-color: white;
+                      -fx-border-radius: 8;
+                      -fx-border-color: #e5e7eb;
+                      -fx-border-width: 1;
+                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 4, 0, 0, 1);
+                      -fx-text-fill: #374151;" />
+</HBox>
                         
-                        <!-- Dropdown pour sélectionner la question -->
-                        <Label text="Sélectionner une question:" style="-fx-font-size: 12; -fx-text-fill: #6b7280; -fx-font-weight: 500;" />
-                        <ComboBox fx:id="questionComboBox" prefWidth="100.0" style="-fx-font-size: 12; -fx-padding: 8;" />
-                        
-                        <!-- Pie Chart avec meilleur spacing -->
-                        <PieChart fx:id="questionPieChart" prefHeight="240.0" VBox.vgrow="ALWAYS" styleClass="question-pie-chart" />
+                        <!-- Pie Chart centré - AUGMENTÉ -->
+                        <PieChart fx:id="questionPieChart" prefHeight="230.0" VBox.vgrow="ALWAYS" styleClass="question-pie-chart" />
                         
                     </VBox>
 

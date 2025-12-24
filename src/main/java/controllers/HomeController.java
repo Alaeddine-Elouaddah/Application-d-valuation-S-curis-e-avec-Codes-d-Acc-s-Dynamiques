@@ -100,7 +100,6 @@ public class HomeController {
                     fadeIn.play();
 
                     stage.setTitle("Rejoindre un Examen");
-                    stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
                     stage.setFullScreenExitHint("");
                     // Force fullscreen after fade transition completes
                     javafx.application.Platform.runLater(() -> {
@@ -118,7 +117,6 @@ public class HomeController {
                 });
                 stage.setScene(newScene);
                 stage.setTitle("Rejoindre un Examen");
-                stage.setFullScreenExitKeyCombination(javafx.scene.input.KeyCombination.keyCombination("ESC"));
                 stage.setFullScreenExitHint("");
                 stage.setFullScreen(true);
                

@@ -1,4 +1,4 @@
-package models;
+package com.project.models;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -11,6 +11,8 @@ public class Question {
     private String text;
     private List<Choice> choices;
     private int maxAnswers; // 1 pour une seule réponse, 2 pour deux réponses
+    private String mediaPath;
+    private MediaType mediaType;
     
     public Question() {
         this.choices = new ArrayList<>();
@@ -21,12 +23,29 @@ public class Question {
         this.maxAnswers = maxAnswers;
         this.choices = new ArrayList<>();
     }
+
+    public Question(String text, int maxAnswers, String mediaPath) {
+        this.text = text;
+        this.maxAnswers = maxAnswers;
+        this.mediaPath = mediaPath;
+        this.choices = new ArrayList<>();
+    }
+    
+    public Question(String text, int maxAnswers, String mediaPath, MediaType mediaType) {
+        this.text = text;
+        this.maxAnswers = maxAnswers;
+        this.mediaPath = mediaPath;
+        this.mediaType = mediaType;
+        this.choices = new ArrayList<>();
+    }
     
     public Document toDocument() {
         Document doc = new Document();
         if (id != null) doc.append("_id", id);
         doc.append("text", text)
-           .append("maxAnswers", maxAnswers);
+           .append("maxAnswers", maxAnswers)
+           .append("mediaPath", mediaPath)
+           .append("mediaType", mediaType != null ? mediaType.name() : null);
         
         List<Document> choicesDoc = new ArrayList<>();
         for (Choice choice : choices) {
@@ -44,7 +63,10 @@ public class Question {
         }
         question.setText(doc.getString("text"));
         question.setMaxAnswers(doc.getInteger("maxAnswers", 1));
-        
+        question.setMediaPath(doc.getString("mediaPath"));
+        String mediaTypeStr = doc.getString("mediaType");
+        question.setMediaType(mediaTypeStr != null ? MediaType.valueOf(mediaTypeStr) : null);
+
         List<Document> choicesDoc = doc.getList("choices", Document.class);
         if (choicesDoc != null) {
             for (Document choiceDoc : choicesDoc) {
@@ -86,5 +108,21 @@ public class Question {
     
     public void setMaxAnswers(int maxAnswers) {
         this.maxAnswers = maxAnswers;
+    }
+
+    public String getMediaPath() {
+        return mediaPath;
+    }
+    
+    public void setMediaPath(String mediaPath) {
+        this.mediaPath = mediaPath;
+    }
+    
+    public MediaType getMediaType() {
+        return mediaType;
+    }
+    
+    public void setMediaType(MediaType mediaType) {
+        this.mediaType = mediaType;
     }
 }

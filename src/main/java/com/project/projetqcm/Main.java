@@ -25,9 +25,6 @@ public class Main extends Application {
             // Activer le plein écran
             primaryStage.setFullScreen(true);
             
-            // Optionnel: permettre à l'utilisateur de quitter le fullscreen avec Escape
-            primaryStage.setFullScreenExitKeyCombination(KeyCombination.keyCombination("ESC"));
-            
             // Optionnel: masquer le message "Appuyez sur ESC pour quitter"
             primaryStage.setFullScreenExitHint("");
             

@@ -13,16 +13,18 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
-import models.Student;
-import models.Question;
-import models.Answer;
+import com.project.models.Student;
+import com.project.models.Question;
+import com.project.models.Answer;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import com.project.models.Exam;
 
 public class StatisticsController {
     @FXML private Button backButton;
@@ -44,12 +46,12 @@ public class StatisticsController {
     @FXML private CategoryAxis rangeCategoryAxis;
     @FXML private NumberAxis rangeNumberAxis;
 
-    @FXML private ComboBox<QuestionDisplay> questionComboBox;
-
+    @FXML private TextField questionNumberInput;
     private final StudentRepository studentRepo = new StudentRepository();
     private final QuestionRepository questionRepo = new QuestionRepository();
     private List<Student> allStudents;
     private List<Question> allQuestions;
+    private Exam currentExam; // Ajout de la variable d'instance pour l'examen courant
 
     @FXML
     public void initialize() {
@@ -83,54 +85,81 @@ public class StatisticsController {
         }
     }
 
-    private void loadQuestions() {
-        try {
-            if (allQuestions != null && !allQuestions.isEmpty()) {
-                // Créer une liste de QuestionDisplay avec les numéros
-                ObservableList<QuestionDisplay> items = FXCollections.observableArrayList();
-                for (int i = 0; i < allQuestions.size(); i++) {
-                    items.add(new QuestionDisplay(i + 1, allQuestions.get(i)));
-                }
-                
-                questionComboBox.setItems(items);
-                
-                // Afficher "Question 1, Question 2, etc."
-                questionComboBox.setCellFactory(param -> new javafx.scene.control.ListCell<QuestionDisplay>() {
-                    @Override
-                    protected void updateItem(QuestionDisplay item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(empty || item == null ? "" : item.toString());
-                    }
-                });
-                
-                questionComboBox.setButtonCell(new javafx.scene.control.ListCell<QuestionDisplay>() {
-                    @Override
-                    protected void updateItem(QuestionDisplay item, boolean empty) {
-                        super.updateItem(item, empty);
-                        setText(empty || item == null ? "Choisir une question" : item.toString());
-                    }
-                });
-                
-                questionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-                    if (newVal != null) {
-                        updateQuestionPieChart(newVal.getQuestion());
-                    }
-                });
-                
-                // Charger la première question par défaut
-                if (!items.isEmpty()) {
-                    questionComboBox.getSelectionModel().select(0);
-                    updateQuestionPieChart(items.get(0).getQuestion());
-                }
-            } else {
-                questionComboBox.setDisable(true);
-            }
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement des questions: " + e.getMessage());
-            e.printStackTrace();
+public void loadForExam(Exam exam) {
+    try {
+        if (exam == null) {
+            System.err.println("loadForExam: exam is null");
+            return;
         }
-    }
+        this.currentExam = exam;
 
+        // Charger uniquement les étudiants liés à cet examen (Student.examId stocke ObjectId)
+        if (exam.getId() != null) {
+            this.allStudents = studentRepo.findByExamId(exam.getId());
+        } else {
+            // Fallback: si id absent, charger tout (ou utiliser examId string si besoin)
+            this.allStudents = studentRepo.findAll();
+        }
+
+        // Charger seulement les questions référencées par l'examen (via questionIds)
+        if (exam.getQuestionIds() != null && !exam.getQuestionIds().isEmpty()) {
+            this.allQuestions = questionRepo.findByIds(exam.getQuestionIds());
+        } else {
+            // Fallback: si pas de questionIds, on peut charger toutes les questions (selon logique)
+            this.allQuestions = questionRepo.findAll();
+        }
+
+        // Mettre à jour les composants UI en fonction des données filtrées
+        updateStatisticsCards(allStudents);
+        populatePieChart(allStudents);
+        populateDistributionChart(allStudents);
+        populateRangeChart(allStudents);
+
+        // Recharger le contrôle de sélection (ici vous avez un TextField)
+        loadQuestions(); // votre implémentation de loadQuestions s'appuie sur allQuestions
+
+    } catch (Exception e) {
+        System.err.println("Erreur dans loadForExam: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+
+private void loadQuestions() {
+    try {
+        if (allQuestions != null && !allQuestions.isEmpty()) {
+            // Afficher la première question par défaut
+            if (!allQuestions.isEmpty()) {
+                questionNumberInput.setText("1");
+                updateQuestionPieChart(allQuestions.get(0));
+            }
+            
+            // Ajouter un listener au TextField pour détecter les changements
+            questionNumberInput.textProperty().addListener((obs, oldVal, newVal) -> {
+                // Vérifier que la saisie est un nombre valide
+                if (newVal != null && !newVal.isEmpty()) {
+                    try {
+                        int questionNumber = Integer.parseInt(newVal);
+                        
+                        // Vérifier que le numéro est dans la plage valide (1 à nombre total de questions)
+                        if (questionNumber >= 1 && questionNumber <= allQuestions.size()) {
+                            // Index est 0-based, numéro de question est 1-based
+                            Question selectedQuestion = allQuestions.get(questionNumber - 1);
+                            updateQuestionPieChart(selectedQuestion);
+                        }
+                    } catch (NumberFormatException e) {
+                        // Ignorer si ce n'est pas un nombre valide
+                    }
+                }
+            });
+        } else {
+            questionNumberInput.setDisable(true);
+            questionNumberInput.setPromptText("Aucune question disponible");
+        }
+    } catch (Exception e) {
+        System.err.println("Erreur lors du chargement des questions: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
     private void updateQuestionPieChart(Question question) {
         if (allStudents == null || allStudents.isEmpty() || question == null) {
             questionPieChart.setData(FXCollections.observableArrayList());
@@ -322,25 +351,32 @@ public class StatisticsController {
         });
     }
 
-    @FXML
-    private void handleBackToResults() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/view_results.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            Scene scene = stage.getScene();
-            if (scene != null && scene.getRoot() != null) {
-                scene.setRoot(root);
-                stage.setTitle("Resultats des Etudiants");
-            } else {
-                stage.setScene(new Scene(root));
-                stage.setTitle("Resultats des Etudiants");
-            }
-        } catch (IOException e) {
-            System.err.println("Impossible de retourner aux résultats: " + e.getMessage());
-            e.printStackTrace();
+@FXML
+private void handleBackToResults() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/view_results.fxml"));
+        Parent root = loader.load();
+
+        // Transférer l'examen courant (si présent) au controller de la page résultats
+        controllers.ViewResultsController resultsController = loader.getController();
+        if (resultsController != null && this.currentExam != null) {
+            resultsController.showExamResults(this.currentExam);
         }
+
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        Scene scene = stage.getScene();
+        if (scene != null && scene.getRoot() != null) {
+            scene.setRoot(root);
+            stage.setTitle("Resultats des Etudiants");
+        } else {
+            stage.setScene(new Scene(root));
+            stage.setTitle("Resultats des Etudiants");
+        }
+    } catch (IOException e) {
+        System.err.println("Impossible de retourner aux résultats: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
     // Classe interne pour afficher les numéros de question
     private static class QuestionDisplay {
