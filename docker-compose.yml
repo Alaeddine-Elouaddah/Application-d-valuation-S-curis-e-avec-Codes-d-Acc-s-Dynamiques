@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: qcm
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - qcm-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  java-app:
+    build: .
+    container_name: java-app
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    environment:
+      MONGO_HOST: mongodb
+      MONGO_PORT: 27017
+      MONGO_DATABASE: qcm
+    ports:
+      - "5900:5900"
+    networks:
+      - qcm-network
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+
+networks:
+  qcm-network:
+    driver: bridge
+
