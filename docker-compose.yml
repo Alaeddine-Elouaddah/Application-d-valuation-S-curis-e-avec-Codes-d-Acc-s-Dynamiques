@@ -28,8 +28,10 @@ services:
       MONGO_HOST: mongodb
       MONGO_PORT: 27017
       MONGO_DATABASE: qcm
+      DISPLAY: :0
     ports:
-      - "5900:5900"
+      - "5900:5900"    # VNC port
+      - "6080:6080"    # Web VNC port
     networks:
       - qcm-network
     restart: unless-stopped
@@ -40,4 +42,3 @@ volumes:
 networks:
   qcm-network:
     driver: bridge
-
