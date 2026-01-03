@@ -40,6 +40,8 @@ mvnw javafx:run
 mvn clean javafx:run
 ```
 
+
+
 ## Structure du Projet
 
 - `src/main/java/com/project/projetqcm/Main.java` - Point d'entrée
@@ -91,4 +93,20 @@ mvn clean javafx:run
 - Vérifiez que MongoDB est démarré: `mongod`
 - Vérifiez l'URL de connexion dans `MongoConnection.java`
 - L'application fonctionne même si MongoDB n'est pas démarré (seulement pour l'interface)
+ 
+ ### Solution 2   si la premier ne passe pas 
+ ## Déploiement avec Docker
 
+### 1. Lancer l'application
+```bash
+docker-compose up --build -d
+```
+
+### 2. Accéder à l'interface
+L'application est accessible via VNC dans le navigateur :
+http://localhost:6080/vnc.html
+
+### 3. Arrêter l'application
+```bash
+docker-compose down -v
+```
