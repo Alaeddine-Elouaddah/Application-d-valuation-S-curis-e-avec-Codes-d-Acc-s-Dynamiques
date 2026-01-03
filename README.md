@@ -48,14 +48,6 @@ mvn clean javafx:run
 - `src/main/java/database/` - Connexion MongoDB
 - `src/main/resources/fxml/` - Interfaces FXML
 
-## Fonctionnalités
-
-- ✅ Interface principale avec choix "Créer" ou "Rejoindre" un examen
-- ✅ Connexion MongoDB configurée
-- ✅ Modèles de données complets
-- 🔄 Création d'examen (en développement)
-- 🔄 Rejoindre un examen (en développement)
-- 🔄 Surveillance et sécurité (à implémenter)
 
 ## Résolution de Problèmes
 
